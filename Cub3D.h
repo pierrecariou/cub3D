@@ -32,6 +32,7 @@ typedef struct 	r_list
 	double rad;
 	double height;
 	double	x_begin;
+	double	x_end;
 	int		visible;
 }				data_s;
 
@@ -82,8 +83,8 @@ typedef struct	s_list
 	data	sprite;
 	int 	vh;
 	int		vv;
-	int		countv;
-	int		counth;
+	int		*countv;
+	int		*counth;
 }				map_list;
 
 typedef struct	l_list

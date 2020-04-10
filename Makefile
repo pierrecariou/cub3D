@@ -31,7 +31,7 @@ ATTRIBUT	= -c
 all:		$(NAME)
 
 .c.o:
-			$(CC) $(CFLAGS) -c $< -o $(<:.c=.o) -I$(HEADER)
+			$(CC) $(CFLAGS) -c $< -o $(<:.c=.o) -I$(HEADER) -I /usr/X11/include -g -L /usr/X11/lib -lX11 -lmlx -lXext
 
 $(NAME):	$(OBJS)
 			$(AR) $(NAME) $(OBJS) && cd libft && make

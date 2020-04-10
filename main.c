@@ -14,25 +14,24 @@
 
 void	color_c(char *data_img, map_list *elem, int size_line, int *c)
 {
-		data_img[c[0] * 4 + size_line * c[1]] = (unsigned int)ft_atoi(elem->C[2]);
-		data_img[c[0] * 4 + size_line * c[1] + 1] = (unsigned int)ft_atoi(elem->C[1]);
-		data_img[c[0] * 4 + size_line * c[1] + 2] = (unsigned int)ft_atoi(elem->C[0]);
+	data_img[c[0] * 4 + size_line * c[1]] = (unsigned int)ft_atoi(elem->C[2]);
+	data_img[c[0] * 4 + size_line * c[1] + 1] = (unsigned int)ft_atoi(elem->C[1]);
+	data_img[c[0] * 4 + size_line * c[1] + 2] = (unsigned int)ft_atoi(elem->C[0]);
 }
 
 void	color_f(char *data_img, map_list *elem, int size_line, int *c)
 {
-		data_img[c[0] * 4 + size_line * c[1]] = (unsigned int)ft_atoi(elem->F[2]);
-		data_img[c[0] * 4 + size_line * c[1] + 1] = (unsigned int)ft_atoi(elem->F[1]);
-		data_img[c[0] * 4 + size_line * c[1] + 2] = (unsigned int)ft_atoi(elem->F[0]);
+	data_img[c[0] * 4 + size_line * c[1]] = (unsigned int)ft_atoi(elem->F[2]);
+	data_img[c[0] * 4 + size_line * c[1] + 1] = (unsigned int)ft_atoi(elem->F[1]);
+	data_img[c[0] * 4 + size_line * c[1] + 2] = (unsigned int)ft_atoi(elem->F[0]);
 }
 
-void	insert_sprite(map_list	*elem, int *data_bi)
+void	insert_sprite(map_list	*elem, int *data_bi, int j)
 {
-	int i;
-	int k;
+	//int i;
+	//int k;
 	int x;
 	int y;
-	int j;
 	double left;
 	double top;
 	double ratio_v;
@@ -40,35 +39,34 @@ void	insert_sprite(map_list	*elem, int *data_bi)
 
 	x = 0;
 	y = 0;
-	i = 0;
-	k = 0;
-	j = 0;
+	//i = 0;
+	//k = 0;
 	left = elem->sprites[j].x_begin;
 	top = (elem->y / 2) - (elem->sprites[j].height / 2);
 	//printf("%f  %f\n", left, top);
 	/*
-	while (x < elem->x)
+	   while (x < elem->x)
+	   {
+	   while (y < elem->y)
+	   {
+	   ratio_v = (i / elem->sprites[0].size) * elem->sprite.height;
+	   ratio_h = (k / elem->sprites[0].size) * elem->sprite.width;
+	//printf("HELLO%f/%f\n", ratio_v, ratio_h);
+	if (x > left && x < left + elem->sprites[0].size && y > top && y < top + elem->sprites[0].size)
 	{
-		while (y < elem->y)
-		{
-			ratio_v = (i / elem->sprites[0].size) * elem->sprite.height;
-			ratio_h = (k / elem->sprites[0].size) * elem->sprite.width;
-			//printf("HELLO%f/%f\n", ratio_v, ratio_h);
-			if (x > left && x < left + elem->sprites[0].size && y > top && y < top + elem->sprites[0].size)
-			{
-				if (elem->sprite.data_img[(int)ratio_h + elem->sprite.width * (int)ratio_v] != elem->sprite.data_img[0])
-					data_bi[x + elem->x * y] = elem->sprite.data_img[(int)ratio_h + elem->sprite.width * (int)ratio_v];
-				i++;
-			}
-			y++;
-		}
-		i = 0;
-		if (x > left)
-			k++;
-		y = 0;
-		x++;
+	if (elem->sprite.data_img[(int)ratio_h + elem->sprite.width * (int)ratio_v] != elem->sprite.data_img[0])
+	data_bi[x + elem->x * y] = elem->sprite.data_img[(int)ratio_h + elem->sprite.width * (int)ratio_v];
+	i++;
 	}
-	*/
+	y++;
+	}
+	i = 0;
+	if (x > left)
+	k++;
+	y = 0;
+	x++;
+	}
+	 */
 	while (x < elem->sprites[j].height)
 	{
 		ratio_h = (x / elem->sprites[j].height) * elem->sprite.height;
@@ -77,7 +75,7 @@ void	insert_sprite(map_list	*elem, int *data_bi)
 			ratio_v = (y / elem->sprites[j].height) * elem->sprite.height;
 			if (elem->sprite.data_img[(int)ratio_h + elem->sprite.width * (int)ratio_v] != elem->sprite.data_img[j])
 			{
-				if ((int)top + 5< elem->y)
+				if ((int)top + 5 < elem->y)
 					data_bi[((int)left + elem->x * (int)top)] = elem->sprite.data_img[(int)ratio_h + elem->sprite.width * (int)ratio_v];
 			}
 			top++;
@@ -151,41 +149,15 @@ void	dist_player(map_list *elem)
 
 	i =  0;
 	//double degrees;
-	double leftangle;
+	//double leftangle;
 	while (i < elem->count_s)
 	{
 		elem->sprites[i].dist = sqrt(pow(elem->posx - elem->sprites[i].x, 2) + pow(elem->posy - elem->sprites[i].y, 2));
-		elem->sprites[i].rad = atan2(elem->sprites[i].y - elem->y, elem->sprites[i].x - elem->x);
+		//elem->sprites[i].rad = atan2(elem->sprites[i].y - elem->y, elem->sprites[i].x - elem->x);
 		elem->sprites[i].height = ceil((elem->cubs) / elem->sprites[i].dist * 255);
 		i++;
 	}
-	/*
-	if (elem->sprites[i].rad < 0)
-		elem->sprites[i].rad += 2 * M_PI;
-		*/
 	sort_sprites(elem);
-	//printf("ATAN%f%f\n", elem->sprites[0].rad, elem->cr);
-	/*
-	i = 0;
-	while (i < elem->count_s)
-	{
-		//elem->sprites[i].x_begin = 10;	
-		//elem->sprites[i].x_begin = (elem->x / 2) + (tan(elem->sprites[i].rad) * 255) - (elem->sprites[i].height / 2);
-	*/
-		i = 0;
-	while (i < elem->count_s)
-	{
-		leftangle = elem->cr + (M_PI / 3) - elem->sprites[i].rad;
-		/*
-		if (elem->sprites[i].rad > 3 * M_PI_2 && elem->cr < M_PI_2)
-			leftangle += 2 * M_PI;
-		else if (elem->sprites[i].rad < M_PI_2 && elem->cr > 3 * M_PI_2)
-			leftangle -= 2 * M_PI;
-			*/
-		//printf("%f\n", leftangle);
-		elem->sprites[i].x_begin = leftangle / elem->abr;
-		i++;
-	}
 }
 
 void	trace_rays(map_list *elem)
@@ -238,7 +210,8 @@ void	trace_rays(map_list *elem)
 	}
 	while (i < elem->count_s)
 	{
-		insert_sprite(elem, (int *)data_img);
+		if (elem->sprites[i].visible)
+			insert_sprite(elem, (int *)data_img, i);
 		i++;
 	}
 	mlx_put_image_to_window(elem->ptr[0], elem->ptr[1], img_ptr,  0,  0);
@@ -246,6 +219,9 @@ void	trace_rays(map_list *elem)
 
 void	choose_dist(double h, double v, int i, map_list *elem)
 {
+	int k;
+
+	k = 0;
 	//printf("%d - %d", elem->vh, elem->vv);
 	if (h <= v)
 	{
@@ -253,8 +229,19 @@ void	choose_dist(double h, double v, int i, map_list *elem)
 		if (elem->ratio_h > 64)
 		{
 			elem->ratios[i] = elem->ratio_v;
-			if (elem->vv == 1)
-				elem->sprites[elem->countv].visible = 1;
+			if (elem->vv != 0)
+			{
+				while (k < elem->vv)
+				{
+					if (!(elem->sprites[elem->countv[k]].visible))
+					{
+						elem->sprites[elem->countv[k]].visible = 1;
+						elem->sprites[elem->countv[k]].x_begin = i;
+					}
+					elem->sprites[elem->countv[k]].x_end = i;
+					k++;
+				}
+			}
 			if (elem->rad < M_PI_2 || elem->rad > 3 * M_PI_2)
 				elem->orient[i] = 'E';
 			else
@@ -262,8 +249,19 @@ void	choose_dist(double h, double v, int i, map_list *elem)
 		}
 		else
 		{
-			if (elem->vh == 1)
-				elem->sprites[elem->counth].visible = 1;
+			if (elem->vh != 0)
+			{
+				while (k < elem->vh)
+				{
+					if (!(elem->sprites[elem->counth[k]].visible))
+					{
+						elem->sprites[elem->counth[k]].visible = 1;
+						elem->sprites[elem->counth[k]].x_begin = i;
+					}
+					elem->sprites[elem->counth[k]].x_end = i;
+					k++;
+				}
+			}
 			elem->ratios[i] = elem->ratio_h;
 			if (elem->rad < M_PI)
 				elem->orient[i] = 'N';
@@ -273,8 +271,19 @@ void	choose_dist(double h, double v, int i, map_list *elem)
 	}
 	else
 	{
-		if (elem->vv == 1)
-			elem->sprites[elem->countv].visible = 1;
+		if (elem->vv != 0)
+		{
+			while (k < elem->vv)
+			{
+				if (!(elem->sprites[elem->countv[k]].visible))
+				{
+					elem->sprites[elem->countv[k]].visible = 1;
+					elem->sprites[elem->countv[k]].x_begin = i;
+				}
+				elem->sprites[elem->countv[k]].x_end = i;
+				k++;
+			}
+		}
 		elem->dist[i] = v;
 		elem->ratios[i] = elem->ratio_v;
 		if (elem->rad < M_PI_2 || elem->rad > 3 * M_PI_2)
@@ -282,8 +291,18 @@ void	choose_dist(double h, double v, int i, map_list *elem)
 		else
 			elem->orient[i] = 'W';
 	}
-	elem->countv = 0;
-	elem->counth = 0;
+	k = 0;
+	while (k < elem->vh)
+	{
+		elem->counth[k] = 0;
+		k++;
+	}
+	k = 0;
+	while (k < elem->vv)
+	{
+		elem->countv[k] = 0;
+		k++;
+	}
 	elem->vh = 0;
 	elem->vv = 0;
 	//printf("ratio%d\n", elem->ratios[i]);
@@ -295,12 +314,14 @@ double	finding_v(map_list *elem)
 	double x;
 	int xg;
 	int yg;
-	int xgrid;
-	int ygrid;
+	int i;
+	//int xgrid;
+	//int ygrid;
+	i = 0;
 	xg = elem->posx / 64;
 	yg = elem->posy / 64;
-	xgrid = xg;
-	ygrid = yg;
+	//xgrid = xg;
+	//ygrid = yg;
 	if (elem->rad < M_PI_2 || elem->rad  > 3 * M_PI_2)
 		x = floor(elem->posx / 64) * 64 + 64;
 	else
@@ -317,15 +338,16 @@ double	finding_v(map_list *elem)
 	}
 	if (elem->map[yg][xg] == '2')
 	{
-		while (elem->countv < elem->count_s)
+		while (i < elem->count_s)
 		{
-			if (elem->sprites[elem->countv].cox == yg && elem->sprites[elem->countv].coy == xg)
+			if (elem->sprites[i].cox == yg && elem->sprites[i].coy == xg)
 			{
-				elem->vv = 1;
+				elem->countv[elem->vv] = i;
+				elem->vv += 1;
 				break ;
 			}
 			else
-				elem->countv += 1;
+				i += 1;
 		}
 	}
 	while (yg > 0 && elem->map[yg][xg] && elem->map[yg][xg] != '1')
@@ -350,15 +372,16 @@ double	finding_v(map_list *elem)
 		}
 		if (elem->map[yg][xg] == '2')
 		{
-			while (elem->countv < elem->count_s)
+			while (i < elem->count_s)
 			{
-				if (elem->sprites[elem->countv].cox == yg && elem->sprites[elem->countv].coy == xg)
+				if (elem->sprites[i].cox == yg && elem->sprites[i].coy == xg)
 				{
-					elem->vv = 1;
+					elem->countv[elem->vv] = i;
+					elem->vv += 1;
 					break ;
 				}
 				else
-					elem->countv += 1;;
+					i += 1;;
 			}
 		}
 
@@ -376,6 +399,8 @@ double	finding_h(map_list *elem)
 	double x;
 	int xg;
 	int yg;
+	int i;
+	i = 0;
 	xg = elem->posx / 64;
 	yg = elem->posy / 64;
 	if (elem->rad < 0)
@@ -397,15 +422,16 @@ double	finding_h(map_list *elem)
 	}
 	if (elem->map[yg][xg] == '2')
 	{
-		while (elem->counth < elem->count_s)
+		while (i < elem->count_s)
 		{
-			if (elem->sprites[elem->counth].cox == yg && elem->sprites[elem->counth].coy == xg)
+			if (elem->sprites[i].cox == yg && elem->sprites[i].coy == xg)
 			{
-				elem->vh = 1;
+				elem->counth[elem->vh] = i;
+				elem->vh += 1;
 				break ;
 			}
 			else
-				elem->counth += 1;
+				i += 1;
 		}
 	}
 	while (xg > 0 && elem->map[yg][xg] && elem->map[yg][xg] != '1')
@@ -430,15 +456,16 @@ double	finding_h(map_list *elem)
 		}
 		if (elem->map[yg][xg] == '2')
 		{
-			while (elem->counth < elem->count_s)
+			while (i < elem->count_s)
 			{
-				if (elem->sprites[elem->counth].cox == yg && elem->sprites[elem->counth].coy == xg)
+				if (elem->sprites[i].cox == yg && elem->sprites[i].coy == xg)
 				{
-					elem->vh = 1;
+					elem->counth[elem->vh] = i;
+					elem->vh += 1;
 					break ;
 				}
 				else
-					elem->counth += 1;
+					i += 1;
 			}
 		}
 	}
@@ -450,36 +477,36 @@ double	finding_h(map_list *elem)
 }
 
 /*
-void	put_square(char coor, int x, int y, map_list *elem)
-{
-	void	*img_ptr;
-	int		bits_per_pixel;
-	int		size_line;
-	int		endian;
-	char	*data_img;
-	int p[2];
-	p[0] = 0;
-	p[1] = 0;
-	img_ptr = mlx_new_image(elem->ptr[0], 64, 64);
-	data_img = mlx_get_data_addr(img_ptr, &bits_per_pixel, &size_line, &endian);
-	while (p[0] < 64)
-	{
-		while (p[1] < 64)
-		{
-			if (coor == '1')
-				color_red(data_img, size_line, p);
-			else if (coor == '0' || coor == '2')
-				color_green(data_img, size_line, p);
-			else if (coor == 'N' || coor == 'W' || coor == 'E' || coor == 'S' )
-				color_green(data_img, size_line, p);
-			p[1]++;
-		}
-		p[1] = 0;
-		p[0]++;
-	}
-	mlx_put_image_to_window(elem->ptr[0], elem->ptr[1], img_ptr,  y * 64,  x * 64);
-}
-*/
+   void	put_square(char coor, int x, int y, map_list *elem)
+   {
+   void	*img_ptr;
+   int		bits_per_pixel;
+   int		size_line;
+   int		endian;
+   char	*data_img;
+   int p[2];
+   p[0] = 0;
+   p[1] = 0;
+   img_ptr = mlx_new_image(elem->ptr[0], 64, 64);
+   data_img = mlx_get_data_addr(img_ptr, &bits_per_pixel, &size_line, &endian);
+   while (p[0] < 64)
+   {
+   while (p[1] < 64)
+   {
+   if (coor == '1')
+   color_red(data_img, size_line, p);
+   else if (coor == '0' || coor == '2')
+   color_green(data_img, size_line, p);
+   else if (coor == 'N' || coor == 'W' || coor == 'E' || coor == 'S' )
+   color_green(data_img, size_line, p);
+   p[1]++;
+   }
+   p[1] = 0;
+   p[0]++;
+   }
+   mlx_put_image_to_window(elem->ptr[0], elem->ptr[1], img_ptr,  y * 64,  x * 64);
+   }
+ */
 
 void	put_map(map_list *elem)
 {
@@ -501,6 +528,7 @@ void	put_map(map_list *elem)
 		y = 0;
 		x++;
 	}
+	printf("HELLO%d\n", elem->count_s);
 	x = 0;
 	y = 0;
 	if (!(elem->sprites = malloc(sizeof(data_s) * elem->count_s)))
@@ -513,18 +541,18 @@ void	put_map(map_list *elem)
 			if (elem->map[x][y] == 'N')
 			{
 				elem->posx = y * 64 + 32;
-				elem->posy = x * 64  + 32;
+				elem->posy = x * 64 + 32;
 				elem->rad = M_PI_2;
 				elem->cr= M_PI_2;
 				elem->map[x][y] = '0';
-				return ;
 			}
-			if (elem->map[x][y] == '2')
+			else if (elem->map[x][y] == '2')
 			{
 				elem->sprites[k].x = x * 64  + 32; 
 				elem->sprites[k].y = y * 64  + 32;
 				elem->sprites[k].cox = x;
 				elem->sprites[k].coy = y;
+				//printf("%d / %d \n", elem->sprites[k].cox, elem->sprites[k].coy);
 				k++;
 			}
 			y++;
@@ -580,17 +608,35 @@ void	init_dist_ratios(map_list *elem)
 		return ;
 	if (!(elem->key_down = malloc(sizeof(int) * 2000)))
 		return ;
+	if (!(elem->countv = malloc(sizeof(int) * 100)))
+		return ;
+	if (!(elem->counth = malloc(sizeof(int) * 100)))
+		return ;
+	while (i < 100)
+	{
+		elem->countv[i] = 0;
+		i++;
+	}
+	i = 0;
+	while (i < 100)
+	{
+		elem->counth[i] = 0;
+		i++;
+	}
+	i = 0;
 	while (i < 2000)
 	{
 		elem->key_down[i] = 0;
 		i++;
 	}
+	elem->vh = 0;
+	elem->vv = 0;
 	elem->count_s = 0;
 }
 
 void		key_action(map_list *elem)
 {
-		if (elem->key_down[13])
+	if (elem->key_down[119])
 	{
 		if (elem->map[(int)((elem->posy - sin(elem->rad) * 10) / 64)][(int)((elem->posx + cos(elem->rad) * 10) / 64)] != '1')
 		{
@@ -598,7 +644,7 @@ void		key_action(map_list *elem)
 			elem->posy -= sin(elem->rad) * 10;
 		}
 	}
-		if (elem->key_down[1])
+	if (elem->key_down[115])
 	{
 		if (elem->map[(int)((elem->posy + sin(elem->rad) * 10) / 64)][(int)((elem->posx - cos(elem->rad) * 10) / 64)] != '1')
 		{
@@ -606,7 +652,7 @@ void		key_action(map_list *elem)
 			elem->posy += sin(elem->rad) * 10;
 		}
 	}
-		if (elem->key_down[2])
+	if (elem->key_down[100])
 	{
 		if (elem->map[(int)((elem->posy - sin(elem->rad + M_PI_2) * 10) / 64)][(int)((elem->posx + cos(elem->rad + M_PI_2) * 10) / 64)] != '1')
 		{
@@ -616,7 +662,7 @@ void		key_action(map_list *elem)
 			//right
 		}
 	}
-		if (elem->key_down[0])
+	if (elem->key_down[97])
 	{
 		if (elem->map[(int)((elem->posy + sin(elem->rad + M_PI_2) * 10) / 64)][(int)((elem->posx - cos(elem->rad + M_PI_2) * 10) / 64)] != '1')
 		{
@@ -625,11 +671,11 @@ void		key_action(map_list *elem)
 			//left
 		}
 	}
-	if (elem->key_down[123])
+	if (elem->key_down[65361])
 	{
 		elem->rad -= 0.08;
 	}
-	if (elem->key_down[124])
+	if (elem->key_down[65363])
 	{
 		elem->rad += 0.08;
 	}
@@ -645,7 +691,8 @@ int		loop(map_list *elem)
 	//elem->count = 0;
 	while (i < elem->count_s)
 	{
-		printf("%d\n", elem->sprites[i].visible);
+		printf("%d - %d\n", i, elem->sprites[i].visible);
+		//	printf("%d / %d \n", elem->sprites[i].coy, elem->sprites[i].cox);
 		elem->sprites[i].visible = 0;
 		i++;
 	}
@@ -675,8 +722,6 @@ int		main(void)
 	coor->line = NULL;
 	read_file(&elem, coor);
 	elem.cubs = elem.y / 5;
-	elem.countv = 0;
-	elem.counth = 0;
 	init_dist_ratios(&elem);
 	create_map(coor, &elem);
 	put_map(&elem);
@@ -685,8 +730,8 @@ int		main(void)
 	elem.ptr[1] = mlx_new_window(elem.ptr[0], elem.x, elem.y, "Cub3D");	
 	new_texture(&elem);
 	//mlx_key_hook(elem.ptr[1], close_win, &elem);
-	mlx_hook(elem.ptr[1], 2, 0, key_press_hook, &elem);
-	mlx_hook(elem.ptr[1], 3, 0, key_release_hook, &elem);
+	mlx_hook(elem.ptr[1], 2, (1L << 0), key_press_hook, &elem);
+	mlx_hook(elem.ptr[1], 3, (1L << 1), key_release_hook, &elem);
 	mlx_loop_hook(elem.ptr[0], loop, &elem);
 	//printf("sizeof%lu\n", sizeof(elem));
 	mlx_loop(elem.ptr[0]);

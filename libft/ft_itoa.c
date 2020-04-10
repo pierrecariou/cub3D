@@ -75,12 +75,10 @@ char	*ft_rev(char *str)
 
 char	*ft_itoa(int nb)
 {
-	long int	num;
 	int			neg;
 	char		*str;
 	long int	nblong;
 
-	num = 0;
 	neg = 0;
 	nblong = (long int)nb;
 	if (!(str = malloc(sizeof(char) * size(nblong) + 1)))
