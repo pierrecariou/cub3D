@@ -28,8 +28,37 @@ void	color_f(char *data_img, map_list *elem, int size_line, int *c)
 
 void	insert_sprite(map_list	*elem, int *data_bi, int j)
 {
-	//int i;
-	//int k;
+	/*
+	int p[2];
+	int i;
+	double ratio_v;
+
+	p[0] = elem->sprites[j].x_begin;
+	p[1] = 0;
+	i = 0;
+	while (p[0] < elem->sprites[j].x_end)
+	{
+		//printf("%c\n%f\n%d\n", elem->orient[p[0]], elem->ratios[p[0]], p[0]);
+		while (p[1] < elem->y)
+		{
+			if (p[1] > (elem->y / 2) - (elem->sprites[j].height / 2) && p[1] < (elem->y / 2) + (elem->sprites[j].height / 2))
+			{
+			//	if (p[1] == 0)
+			//		i = ((elem->y / 2) - ((elem->cubs / elem->dist[p[0]] * 255) / 2)) * -1; 
+				ratio_v = (i / elem->sprites[j].height) * elem->sprite.height;
+				if (elem->sprite.data_img[(int)ratio_v + (int)ratio_v * elem->sprite.width] != elem->sprite.data_img[0])
+					data_bi[p[0] + elem->x * p[1]] = elem->sprite.data_img[(int)ratio_v + ((int)(ratio_v) * elem->sprite.width)];
+				//((int *)data_img)[p[0] + elem->x * p[1]] = ((int *)data)[0];
+				//color_red(data_img, size_line, p);
+				i++;
+			}
+			p[1]++;
+		}
+		i = 0;
+		p[1] = 0;
+		p[0]++;
+	}
+	*/
 	int x;
 	int y;
 	double left;
@@ -39,34 +68,8 @@ void	insert_sprite(map_list	*elem, int *data_bi, int j)
 
 	x = 0;
 	y = 0;
-	//i = 0;
-	//k = 0;
 	left = elem->sprites[j].x_begin;
-	top = (elem->y / 2) - (elem->sprites[j].height / 2);
-	//printf("%f  %f\n", left, top);
-	/*
-	   while (x < elem->x)
-	   {
-	   while (y < elem->y)
-	   {
-	   ratio_v = (i / elem->sprites[0].size) * elem->sprite.height;
-	   ratio_h = (k / elem->sprites[0].size) * elem->sprite.width;
-	//printf("HELLO%f/%f\n", ratio_v, ratio_h);
-	if (x > left && x < left + elem->sprites[0].size && y > top && y < top + elem->sprites[0].size)
-	{
-	if (elem->sprite.data_img[(int)ratio_h + elem->sprite.width * (int)ratio_v] != elem->sprite.data_img[0])
-	data_bi[x + elem->x * y] = elem->sprite.data_img[(int)ratio_h + elem->sprite.width * (int)ratio_v];
-	i++;
-	}
-	y++;
-	}
-	i = 0;
-	if (x > left)
-	k++;
-	y = 0;
-	x++;
-	}
-	 */
+	top = (elem->y / 2);
 	while (x < elem->sprites[j].height)
 	{
 		ratio_h = (x / elem->sprites[j].height) * elem->sprite.height;
@@ -75,18 +78,18 @@ void	insert_sprite(map_list	*elem, int *data_bi, int j)
 			ratio_v = (y / elem->sprites[j].height) * elem->sprite.height;
 			if (elem->sprite.data_img[(int)ratio_h + elem->sprite.width * (int)ratio_v] != elem->sprite.data_img[j])
 			{
-				if ((int)top + 5 < elem->y)
+				if ((int)top + 5< elem->y)
 					data_bi[((int)left + elem->x * (int)top)] = elem->sprite.data_img[(int)ratio_h + elem->sprite.width * (int)ratio_v];
 			}
 			top++;
 			y++;
 		}
 		left++;
-		top = (elem->y / 2) + (elem->sprites[j].height / 2);
+		top = (elem->y / 2);
 		y = 0;
 		x++;
 	}
-	//mlx_put_image_to_window(elem->ptr[0], elem->ptr[1], elem->sprite.img_ptr, 0,  0);	
+
 }	
 
 void	insert_texture(map_list *elem, int *p, int *data_bi, double ratio_v)
@@ -154,7 +157,9 @@ void	dist_player(map_list *elem)
 	{
 		elem->sprites[i].dist = sqrt(pow(elem->posx - elem->sprites[i].x, 2) + pow(elem->posy - elem->sprites[i].y, 2));
 		//elem->sprites[i].rad = atan2(elem->sprites[i].y - elem->y, elem->sprites[i].x - elem->x);
-		elem->sprites[i].height = ceil((elem->cubs) / elem->sprites[i].dist * 255);
+
+		elem->sprites[i].height = (elem->sprites[i].x_end - elem->sprites[i].x_begin) / 2;
+		//elem->sprites[i].height = ceil((elem->cubs) / elem->sprites[i].dist * 255);
 		i++;
 	}
 	sort_sprites(elem);
@@ -208,11 +213,12 @@ void	trace_rays(map_list *elem)
 		p[1] = 0;
 		p[0]++;
 	}
-	while (i < elem->count_s)
+	i = elem->count_s;
+	while (i >= 0)
 	{
 		if (elem->sprites[i].visible)
 			insert_sprite(elem, (int *)data_img, i);
-		i++;
+		i--;
 	}
 	mlx_put_image_to_window(elem->ptr[0], elem->ptr[1], img_ptr,  0,  0);
 }
