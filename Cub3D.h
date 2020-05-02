@@ -29,11 +29,26 @@ typedef struct 	r_list
 	int cox;
 	int coy;
 	double dist;
-	double rad;
 	double height;
 	double	x_begin;
 	double	x_end;
 	int		visible;
+	double 	m;
+	double 	p;
+	double 	xl;
+	double 	yl;
+	double	xr;
+	double	yr;
+	double	dperp;
+	double 	mxb;
+	double	pxb;
+	double	xz;
+	double	yz;
+	double ratio_h;
+	double rad;
+	double center;
+	double left;
+	double right;
 }				data_s;
 
 typedef struct	t_list
@@ -85,6 +100,8 @@ typedef struct	s_list
 	int		vv;
 	int		*countv;
 	int		*counth;
+	double m;
+	double p;
 }				map_list;
 
 typedef struct	l_list
