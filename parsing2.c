@@ -6,7 +6,7 @@
 /*   By: pcariou <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/28 15:24:48 by pcariou           #+#    #+#             */
-/*   Updated: 2020/02/28 18:09:15 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/05/06 16:58:09 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ void	read_file(map_list	*elem, map_coor *coor)
 	k = 0;
 	elem->F = malloc(sizeof(char *) * 3);
 	elem->C = malloc(sizeof(char *) * 3);
+	elem->F_color = malloc(sizeof(unsigned int) * 3);
+	elem->C_color = malloc(sizeof(unsigned int) * 3);
 	fd = open("./map.cub", O_RDONLY);
 	while (get_next_line(fd, &line) == 1)
 	{

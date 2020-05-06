@@ -6,7 +6,7 @@
 /*   By: pcariou <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 10:31:53 by pcariou           #+#    #+#             */
-/*   Updated: 2020/03/12 18:53:37 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/05/06 16:10:16 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,25 +26,8 @@ typedef struct 	r_list
 {
 	double x;
 	double y;
-	int cox;
-	int coy;
 	double dist;
 	double height;
-	double	x_begin;
-	double	x_end;
-	int		visible;
-	double 	m;
-	double 	p;
-	double 	xl;
-	double 	yl;
-	double	xr;
-	double	yr;
-	double	dperp;
-	double 	mxb;
-	double	pxb;
-	double	xz;
-	double	yz;
-	double ratio_h;
 	double rad;
 	double center;
 	double left;
@@ -71,8 +54,10 @@ typedef struct	s_list
 	char	*WE;
 	char	*EA;
 	char	*S;
-	char	**F;
+	char 	**F;
 	char	**C;
+	unsigned int		*F_color;
+	unsigned int		*C_color;
 	int		lines;
 	int 	length;
 	double	rad;
@@ -86,6 +71,7 @@ typedef struct	s_list
 	double	*dist;
 	double	*ratios;
 	char	*orient;
+	double 	*sizes;
 	int		cubs;
 	int		count_s;
 	void	*ptr[2];
@@ -96,19 +82,13 @@ typedef struct	s_list
 	data	t3;
 	data	t4;
 	data	sprite;
-	int 	vh;
-	int		vv;
-	int		*countv;
-	int		*counth;
-	double m;
-	double p;
+	data	screen;
 }				map_list;
 
 typedef struct	l_list
 {
 	char			*line;
 	struct l_list	*next;
-
 }				map_coor;
 
 int		get_next_line(int fd, char **line);
@@ -129,5 +109,17 @@ void	read_coor(map_coor *coor, char *line);
 void	read_file(map_list	*elem, map_coor *coor);
 void	create_map(map_coor *coor, map_list *elem);
 double	finding_h(map_list *elem);
+void	map_infos1(map_list *elem, int x, int y, int k);
+double	finding_v(map_list *elem);
+void	new_texture(map_list *elem);
+void    choose_dist(double h, double v, int i, map_list *elem);
+void    trace_rays(map_list *elem);
+void	key_action1(map_list *elem);
+void	call_all_rays(map_list *elem);
+void	init_dist_ratios(map_list *elem);
+void	map_infos(map_list *elem);
+void     close_win(map_list *elem);
+int		map_out(map_list *elem, unsigned int *map, int v);
+void	computation_v(map_list *elem, unsigned int *map, double *coor);
 
 #endif

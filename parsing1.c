@@ -6,7 +6,7 @@
 /*   By: pcariou <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/28 15:21:21 by pcariou           #+#    #+#             */
-/*   Updated: 2020/02/28 15:13:08 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/05/06 17:00:39 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,9 @@ void	map_c(map_list *elem, char *line, int i, int k)
 			l++;
 			i++;
 		}
+		i = -1;
+		while (++i < 3)
+			elem->C_color[i] = ft_atoi(elem->C[i]);
 	}
 }
 
@@ -106,6 +109,9 @@ void	map_f(map_list *elem, char *line, int i, int k)
 			l++;
 			i++;
 		}
+		i = -1;
+		while (++i < 3)
+			elem->F_color[i] = ft_atoi(elem->F[i]);
 	}
 }
 
