@@ -6,7 +6,7 @@
 /*   By: pcariou <pcariou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 18:15:16 by pcariou           #+#    #+#             */
-/*   Updated: 2020/05/06 17:59:23 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/06/09 21:35:19 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,36 @@ void	call_all_rays(map_list *elem)
 
 void	close_win(map_list *elem)
 {
+	int i;
+
+	i = -1;
 	if (elem->key_down[65307])
-		exit(0);
+	{
+	free(elem->NO);
+	free(elem->SO);
+		free(elem->WE);
+	free(elem->EA);
+	free(elem->S);
+	while (++i < 3)
+	{
+		free(elem->F[i]);
+		free(elem->C[i]);
+	}
+	free(elem->F);
+	free(elem->C);
+	free(elem->F_color);
+	free(elem->C_color);
+	i = -1;
+	while (elem->map[++i])
+		free(elem->map[i]);
+	free(elem->map);
+	free(elem->dist);
+	free(elem->ratios);
+	free(elem->sizes);
+	free(elem->orient);
+	free(elem->key_down);
+	exit(0);
+	}
 }
 
 void	init_dist_ratios(map_list *elem)

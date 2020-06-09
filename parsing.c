@@ -6,7 +6,7 @@
 /*   By: pcariou <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/28 15:14:32 by pcariou           #+#    #+#             */
-/*   Updated: 2020/02/28 18:08:44 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/06/09 19:51:54 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,12 @@ void	map_x_y(map_list *elem, char *line, int i, int k)
 	char	*x;
 	char	*y;
 
-	x = malloc(5);
-	y = malloc(5);
 	if (line[0] == 'R' && line[1] == ' ')
 	{
+		if (!(x = malloc(5)))
+			return ;
+		if (!(y = malloc(5)))
+			return ;
 		while (ft_isdigit(line[i]) == 1)
 		{
 			x[k] = line[i];
@@ -108,5 +110,7 @@ void	map_x_y(map_list *elem, char *line, int i, int k)
 		}
 		y[k] = 0;
 		elem->y = ft_atoi(y);
+		free(x);
+		free(y);
 	}
 }

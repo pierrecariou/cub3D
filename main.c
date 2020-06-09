@@ -6,7 +6,7 @@
 /*   By: pcariou <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/19 08:54:40 by pcariou           #+#    #+#             */
-/*   Updated: 2020/05/06 17:59:21 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/06/09 18:55:48 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,11 @@ void	key_action(map_list *elem)
 {
 	if (elem->key_down[119])
 	{
-		if (elem->map[(int)((elem->posy - sin(elem->rad) * 10) / 64)]
+		if ((elem->map[(int)((elem->posy - sin(elem->rad) * 10) / 64)]
 				[(int)((elem->posx + cos(elem->rad) * 10) / 64)] != '1')
+			&& sqrt(pow((elem->posx + cos(elem->rad) * 5) - elem->sprites[0].x, 2) +
+			pow((elem->posy - sin(elem->rad) * 5) -
+			elem->sprites[0].y, 2)) * 0.9 >= (elem->cubs / 6))
 		{
 			elem->posx += cos(elem->rad) * 5;
 			elem->posy -= sin(elem->rad) * 5;
@@ -25,8 +28,11 @@ void	key_action(map_list *elem)
 	}
 	if (elem->key_down[115])
 	{
-		if (elem->map[(int)((elem->posy + sin(elem->rad) * 10) / 64)]
+		if ((elem->map[(int)((elem->posy + sin(elem->rad) * 10) / 64)]
 				[(int)((elem->posx - cos(elem->rad) * 10) / 64)] != '1')
+			&& sqrt(pow((elem->posx - cos(elem->rad) * 5) - elem->sprites[0].x, 2) 
+			+ pow((elem->posy + sin(elem->rad) * 5)  -
+			elem->sprites[0].y, 2)) * 0.9 >= (elem->cubs / 6))
 		{
 			elem->posx -= cos(elem->rad) * 5;
 			elem->posy += sin(elem->rad) * 5;
@@ -83,6 +89,7 @@ int		main(void)
 	new_texture(&elem);
 	mlx_hook(elem.ptr[1], 2, (1L << 0), key_press_hook, &elem);
 	mlx_hook(elem.ptr[1], 3, (1L << 1), key_release_hook, &elem);
+
 	mlx_loop_hook(elem.ptr[0], loop, &elem);
 	mlx_loop(elem.ptr[0]);
 	return (0);

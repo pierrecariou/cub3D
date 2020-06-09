@@ -6,7 +6,7 @@
 /*   By: pcariou <pcariou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 13:53:49 by pcariou           #+#    #+#             */
-/*   Updated: 2020/05/06 17:41:32 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/06/09 21:35:02 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void    insert_sprite(map_list  *elem, int *data_bi, int j)
 	y = 0;
 	top = (elem->y / 2);
 	(void)data_bi;
+	//printf("%f\n", elem->sprites[j].dist);
 	while (x < elem->sprites[j].height && (int)elem->sprites[j].left < elem->x)
 	{
 		ratio_h = (x / elem->sprites[j].height) * elem->sprite.width;
@@ -46,7 +47,7 @@ void    insert_sprite(map_list  *elem, int *data_bi, int j)
 			ratio_v = (y / elem->sprites[j].height) * elem->sprite.height;
 			if (elem->sprite.data_img[(int)ratio_h + elem->sprite.width * (int)ratio_v] != elem->sprite.data_img[0])
 			{
-				if (elem->dist[(int)elem->sprites[j].left] > elem->sprites[j].dist && (int)elem->sprites[j].left >= 0)
+				if ( (int)elem->sprites[j].left >= 0 && elem->dist[(int)elem->sprites[j].left] > elem->sprites[j].dist)
 					data_bi[((int)elem->sprites[j].left + elem->x * (int)top)] = elem->sprite.data_img[(int)ratio_h + elem->sprite.width * (int)ratio_v];
 			}
 			top++;
@@ -83,6 +84,8 @@ void    new_texture(map_list *elem)
 	elem->t4.data_img = (int *)mlx_get_data_addr(elem->t4.img_ptr, &(elem->t4.bits_per_pixel), &(elem->t4.size_line), &(elem->t4.endian));
 	elem->sprite.img_ptr = mlx_xpm_file_to_image(elem->ptr[0], elem->S, &(elem->sprite.width), &(elem->sprite.height));
 	elem->sprite.data_img = (int *)mlx_get_data_addr(elem->sprite.img_ptr, &(elem->sprite.bits_per_pixel), &(elem->sprite.size_line), &(elem->sprite.endian));
+	elem->screen.img_ptr = mlx_new_image(elem->ptr[0], elem->x, elem->y);
+	        elem->screen.data_img = (int *)mlx_get_data_addr(elem->screen.img_ptr, &elem->screen.bits_per_pixel, &elem->screen.size_line, &elem->screen.endian);
 }
 
 void    sort_sprites(map_list *elem)
@@ -150,8 +153,8 @@ void    trace_rays(map_list *elem)
 	p[0] = 0;
 	p[1] = 0;
 	i = 0;
-	elem->screen.img_ptr = mlx_new_image(elem->ptr[0], elem->x, elem->y);
-	elem->screen.data_img = (int *)mlx_get_data_addr(elem->screen.img_ptr, &elem->screen.bits_per_pixel, &elem->screen.size_line, &elem->screen.endian);
+	//elem->screen.img_ptr = mlx_new_image(elem->ptr[0], elem->x, elem->y);
+	//elem->screen.data_img = (int *)mlx_get_data_addr(elem->screen.img_ptr, &elem->screen.bits_per_pixel, &elem->screen.size_line, &elem->screen.endian);
 	while (p[0] < elem->x)
 	{
 		while (p[1] < elem->y)
@@ -174,12 +177,13 @@ void    trace_rays(map_list *elem)
 		p[0]++;
 	}
 	dist_player(elem);
-	i = elem->count_s + 1;
-	while (i-- >= 0)
+	i = elem->count_s - 1;
+	while (i >= 0)
 	{
 		if (((int)elem->sprites[i].left > 0 && (int)elem->sprites[i].right <= elem->x)
 			|| ((int)elem->sprites[i].right >= 0 && (int)elem->sprites[i].left < elem->x))
 			insert_sprite(elem, (int *)elem->screen.data_img, i);
+		i--;
 	}
 	mlx_put_image_to_window(elem->ptr[0], elem->ptr[1], elem->screen.img_ptr,  0,  0);
 }

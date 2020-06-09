@@ -6,7 +6,7 @@
 /*   By: pcariou <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 19:50:06 by pcariou           #+#    #+#             */
-/*   Updated: 2020/01/21 15:21:28 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/06/09 20:50:13 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,6 @@ char	**end_of_file(char *buf, char **line, int ret)
 			*line = create_lines(buf, 1)[0];
 			return (0);
 		}
-		if (!(*line = malloc(1)))
-			return (0);
-		*line[0] = 0;
 		return (0);
 	}
 	buf[ret] = 0;

@@ -6,7 +6,7 @@
 /*   By: pcariou <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/28 15:24:48 by pcariou           #+#    #+#             */
-/*   Updated: 2020/05/06 16:58:09 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/06/09 20:43:37 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,5 +86,6 @@ void	read_file(map_list	*elem, map_coor *coor)
 		map_f(elem, line, i, k);
 		map_c(elem, line, i, k);
 		read_coor(coor, line);
+		free(line);
 	}
 }
