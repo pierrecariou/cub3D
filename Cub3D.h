@@ -6,7 +6,7 @@
 /*   By: pcariou <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 10:31:53 by pcariou           #+#    #+#             */
-/*   Updated: 2020/05/06 16:10:16 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/06/11 16:37:41 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,9 @@ typedef struct	s_list
 	int		count_s;
 	void	*ptr[2];
 	int		*key_down;
+	//int		b;
+	int		*sizex;
+	int		*sizey;
 	data_s  *sprites;
 	data	t1;
 	data	t2;
@@ -105,8 +108,8 @@ void	map_c(map_list *elem, char *line, int i, int k);
 void	map_f(map_list *elem, char *line, int i, int k);
 void	map_s(map_list *elem, char *line, int i, int k);
 void	lst_new(char *line_coor, map_coor *coor);
-void	read_coor(map_coor *coor, char *line);
-void	read_file(map_list	*elem, map_coor *coor);
+int		read_coor(map_coor *coor, char *line);
+int		read_file(map_list	*elem, map_coor *coor);
 void	create_map(map_coor *coor, map_list *elem);
 double	finding_h(map_list *elem);
 void	map_infos1(map_list *elem, int x, int y, int k);
@@ -118,7 +121,7 @@ void	key_action1(map_list *elem);
 void	call_all_rays(map_list *elem);
 void	init_dist_ratios(map_list *elem);
 void	map_infos(map_list *elem);
-void     close_win(map_list *elem);
+void    close_win(map_list *elem);
 int		map_out(map_list *elem, unsigned int *map, int v);
 void	computation_v(map_list *elem, unsigned int *map, double *coor);
 

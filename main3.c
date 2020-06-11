@@ -6,7 +6,7 @@
 /*   By: pcariou <pcariou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 13:53:49 by pcariou           #+#    #+#             */
-/*   Updated: 2020/06/09 21:35:02 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/06/10 16:35:09 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,14 @@ void    insert_sprite(map_list  *elem, int *data_bi, int j)
 	x = 0;
 	y = 0;
 	top = (elem->y / 2);
-	(void)data_bi;
-	//printf("%f\n", elem->sprites[j].dist);
+	/*
+	if ((int)elem->sprites[j].left < 0)
+	{
+		x = elem->sprites[j].left * -1;
+		elem->sprites[j].left = 0;
+	}
+	*/
+	//printf("%d\n", (int)elem->sprites[j].left);
 	while (x < elem->sprites[j].height && (int)elem->sprites[j].left < elem->x)
 	{
 		ratio_h = (x / elem->sprites[j].height) * elem->sprite.width;
@@ -47,7 +53,7 @@ void    insert_sprite(map_list  *elem, int *data_bi, int j)
 			ratio_v = (y / elem->sprites[j].height) * elem->sprite.height;
 			if (elem->sprite.data_img[(int)ratio_h + elem->sprite.width * (int)ratio_v] != elem->sprite.data_img[0])
 			{
-				if ( (int)elem->sprites[j].left >= 0 && elem->dist[(int)elem->sprites[j].left] > elem->sprites[j].dist)
+				if ((int)elem->sprites[j].left >= 0 && elem->dist[(int)elem->sprites[j].left] > elem->sprites[j].dist)
 					data_bi[((int)elem->sprites[j].left + elem->x * (int)top)] = elem->sprite.data_img[(int)ratio_h + elem->sprite.width * (int)ratio_v];
 			}
 			top++;
@@ -74,6 +80,8 @@ void    insert_texture(map_list *elem, int *p, int *data_bi, int i)
 
 void    new_texture(map_list *elem)
 {
+//	elem->screen.img_ptr = mlx_new_image(elem->ptr[0], elem->x, elem->y);
+//	elem->screen.data_img = (int *)mlx_get_data_addr(elem->screen.img_ptr, &elem->screen.bits_per_pixel, &elem->screen.size_line, &elem->screen.endian);
 	elem->t1.img_ptr = mlx_xpm_file_to_image(elem->ptr[0], elem->NO, &(elem->t1.width), &(elem->t1.height));
 	elem->t1.data_img = (int *)mlx_get_data_addr(elem->t1.img_ptr, &(elem->t1.bits_per_pixel), &(elem->t1.size_line), &(elem->t1.endian));
 	elem->t2.img_ptr = mlx_xpm_file_to_image(elem->ptr[0], elem->SO, &(elem->t2.width), &(elem->t2.height));
@@ -83,9 +91,7 @@ void    new_texture(map_list *elem)
 	elem->t4.img_ptr = mlx_xpm_file_to_image(elem->ptr[0], elem->WE, &(elem->t4.width), &(elem->t4.height));
 	elem->t4.data_img = (int *)mlx_get_data_addr(elem->t4.img_ptr, &(elem->t4.bits_per_pixel), &(elem->t4.size_line), &(elem->t4.endian));
 	elem->sprite.img_ptr = mlx_xpm_file_to_image(elem->ptr[0], elem->S, &(elem->sprite.width), &(elem->sprite.height));
-	elem->sprite.data_img = (int *)mlx_get_data_addr(elem->sprite.img_ptr, &(elem->sprite.bits_per_pixel), &(elem->sprite.size_line), &(elem->sprite.endian));
-	elem->screen.img_ptr = mlx_new_image(elem->ptr[0], elem->x, elem->y);
-	        elem->screen.data_img = (int *)mlx_get_data_addr(elem->screen.img_ptr, &elem->screen.bits_per_pixel, &elem->screen.size_line, &elem->screen.endian);
+	elem->sprite.data_img = (int *)mlx_get_data_addr(elem->sprite.img_ptr, &(elem->sprite.bits_per_pixel), &(elem->sprite.size_line), &(elem->sprite.endian));	
 }
 
 void    sort_sprites(map_list *elem)
@@ -149,12 +155,14 @@ void    trace_rays(map_list *elem)
 {
 	int p[2];
 	int i;
+	void *ptr;
 
 	p[0] = 0;
 	p[1] = 0;
 	i = 0;
-	//elem->screen.img_ptr = mlx_new_image(elem->ptr[0], elem->x, elem->y);
-	//elem->screen.data_img = (int *)mlx_get_data_addr(elem->screen.img_ptr, &elem->screen.bits_per_pixel, &elem->screen.size_line, &elem->screen.endian);
+	ptr = mlx_new_image(elem->ptr[0], elem->x, elem->y);
+	elem->screen.data_img = (int *)mlx_get_data_addr(ptr, &elem->screen.bits_per_pixel, &elem->screen.size_line, &elem->screen.endian);
+
 	while (p[0] < elem->x)
 	{
 		while (p[1] < elem->y)
@@ -185,7 +193,8 @@ void    trace_rays(map_list *elem)
 			insert_sprite(elem, (int *)elem->screen.data_img, i);
 		i--;
 	}
-	mlx_put_image_to_window(elem->ptr[0], elem->ptr[1], elem->screen.img_ptr,  0,  0);
+	mlx_put_image_to_window(elem->ptr[0], elem->ptr[1], ptr,  0,  0);
+	mlx_destroy_image (elem->ptr[0], ptr);
 }
 
 void	choose_dist(double h, double v, int i, map_list *elem)

@@ -6,7 +6,7 @@
 /*   By: pcariou <pcariou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 18:15:16 by pcariou           #+#    #+#             */
-/*   Updated: 2020/06/09 21:35:19 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/06/11 16:07:35 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,13 @@ void	close_win(map_list *elem)
 	free(elem->sizes);
 	free(elem->orient);
 	free(elem->key_down);
+	mlx_destroy_image(elem->ptr[0], elem->t1.img_ptr);	
+	mlx_destroy_image(elem->ptr[0], elem->t2.img_ptr);
+	mlx_destroy_image(elem->ptr[0], elem->t3.img_ptr);
+	mlx_destroy_image(elem->ptr[0], elem->t4.img_ptr);
+	mlx_destroy_image(elem->ptr[0], elem->sprite.img_ptr);
+	mlx_clear_window (elem->ptr[0], elem->ptr[1]);
+	mlx_destroy_window (elem->ptr[0], elem->ptr[1]);
 	exit(0);
 	}
 }
@@ -124,26 +131,36 @@ void	key_action1(map_list *elem)
 {
 	if (elem->key_down[97])
 	{
-		if (elem->map[(int)((elem->posy - sin(elem->rad +
-							M_PI_2) * 5) / 64)][(int)((elem->posx +
-							cos(elem->rad + M_PI_2) * 5) / 64)] != '1')
+		if ((elem->map[(int)((elem->posy - sin(elem->rad +
+				M_PI_2) * 5) / 64)][(int)((elem->posx +
+				cos(elem->rad + M_PI_2) * 5) / 64)] != '1') && 
+				(sqrt(pow((elem->posx + cos(elem->rad + M_PI_2) * 5) - elem->sprites[0].x, 2)
+				  + pow((elem->posy - sin(elem->rad + M_PI_2) * 5)  -
+				 elem->sprites[0].y, 2)) * 0.9 >= (elem->cubs / 6) ))
 		{
 			elem->posx += cos(elem->rad + M_PI_2) * 5;
 			elem->posy -= sin(elem->rad + M_PI_2) * 5;
+			//elem->b = 1;
 		}
 	}
 	if (elem->key_down[100])
 	{
-		if (elem->map[(int)((elem->posy + sin(elem->rad +
+		if ((elem->map[(int)((elem->posy + sin(elem->rad +
 							M_PI_2) * 5) / 64)][(int)((elem->posx -
-							cos(elem->rad + M_PI_2) * 5) / 64)] != '1')
+							cos(elem->rad + M_PI_2) * 5) / 64)] != '1') && 
+				(sqrt(pow((elem->posx - cos(elem->rad + M_PI_2) * 5) - elem->sprites[0].x, 2)
+				  + pow((elem->posy + sin(elem->rad + M_PI_2) * 5)  -
+				 elem->sprites[0].y, 2)) * 0.9 >= (elem->cubs / 6) ))
+ 
 		{
 			elem->posx -= cos(elem->rad + M_PI_2) * 5;
 			elem->posy += sin(elem->rad + M_PI_2) * 5;
+			//elem->b = 1;
 		}
 	}
 	if (elem->key_down[65361])
 	{
 		elem->rad += 0.04;
+		//elem->b = 1;
 	}
 }
