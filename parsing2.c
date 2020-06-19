@@ -6,7 +6,7 @@
 /*   By: pcariou <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/28 15:24:48 by pcariou           #+#    #+#             */
-/*   Updated: 2020/06/11 15:17:58 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/06/18 18:34:30 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,18 +51,17 @@ int		read_coor(map_coor *coor, char *line)
 		while (line[k])
 		{
 			if (line[k] == '1' || line[k] == '0' || line[k] == '2' ||
-					line[k] == 'N' || line[k] == 'S' || line[k] == 'O' ||
+					line[k] == 'N' || line[k] == 'S' || line[k] == 'W' ||
 					line[k] == 'E' || line[k] == ' ')
 			{
 				line_coor[i] = line[k];
-				if (line_coor[i] == ' ')
-					line_coor[i] = '1';
 				i++;
 			}
+			else
+				return (2);
 			k++;
 		}
-		if (line[k - 1] != '1')
-			return (1);
+		//printf("%s\n", line_coor);
 		line_coor[i] = 0;
 		lst_new(line_coor, coor);
 	}
@@ -101,7 +100,10 @@ int		read_file(map_list	*elem, map_coor *coor)
 		map_f(elem, line, i, k);
 		map_c(elem, line, i, k);
 		if (read_coor(coor, line) == 1)
+		{
+			free(line);
 			return (1);
+		}
 		free(line);
 	}
 	return (0);

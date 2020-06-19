@@ -6,7 +6,7 @@
 /*   By: pcariou <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/19 08:54:40 by pcariou           #+#    #+#             */
-/*   Updated: 2020/06/11 17:58:35 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/06/19 13:04:25 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ void	key_action(map_list *elem)
 	if (elem->key_down[119])
 	{
 		if ((elem->map[(int)((elem->posy - sin(elem->rad) * 5) / 64)]
-				[(int)((elem->posx + cos(elem->rad) * 5) / 64)] != '1')
-			&& sqrt(pow((elem->posx + cos(elem->rad) * 5) - elem->sprites[0].x, 2) +
-			pow((elem->posy - sin(elem->rad) * 5) -
-			elem->sprites[0].y, 2)) * 0.9 >= (elem->cubs / 6) && 
-			wallsbetween(elem) == 0)
+					[(int)((elem->posx + cos(elem->rad) * 5) / 64)] != '1')
+				&& sqrt(pow((elem->posx + cos(elem->rad) * 5) - elem->sprites[0].x, 2) +
+					pow((elem->posy - sin(elem->rad) * 5) -
+						elem->sprites[0].y, 2)) * 0.9 >= (elem->cubs / 6) && 
+				wallsbetween(elem) == 0)
 		{
 			elem->posx += cos(elem->rad) * 5;
 			elem->posy -= sin(elem->rad) * 5;
@@ -45,10 +45,10 @@ void	key_action(map_list *elem)
 	if (elem->key_down[115])
 	{
 		if ((elem->map[(int)((elem->posy + sin(elem->rad) * 5) / 64)]
-				[(int)((elem->posx - cos(elem->rad) * 5) / 64)] != '1')
-			&& sqrt(pow((elem->posx - cos(elem->rad) * 5) - elem->sprites[0].x, 2) 
-			+ pow((elem->posy + sin(elem->rad) * 5)  -
-			elem->sprites[0].y, 2)) * 0.9 >= (elem->cubs / 6))
+					[(int)((elem->posx - cos(elem->rad) * 5) / 64)] != '1')
+				&& sqrt(pow((elem->posx - cos(elem->rad) * 5) - elem->sprites[0].x, 2) 
+					+ pow((elem->posy + sin(elem->rad) * 5)  -
+						elem->sprites[0].y, 2)) * 0.9 >= (elem->cubs / 6))
 		{
 			elem->posx -= cos(elem->rad) * 5;
 			elem->posy += sin(elem->rad) * 5;
@@ -96,33 +96,97 @@ int close_w(void *param)
 	return (0);
 }
 /*
-int 	exit_hook(map_list *elem)
+   int 	exit_hook(map_list *elem)
+   {
+   printf("bye\n");
+   key_action(elem);
+   exit(0);
+   return (0);
+   }
+ */
+void	free_errors(map_list *elem)
 {
-	printf("bye\n");
-	key_action(elem);
-	exit(0);
+	int i;
+
+	i = -1;
+	free(elem->NO);
+	free(elem->SO);
+	free(elem->WE);
+	free(elem->EA);
+	free(elem->S);
+	while (++i < 3)
+	{
+		free(elem->F[i]);
+		free(elem->C[i]);
+	}
+	free(elem->F);
+	free(elem->C);
+	free(elem->F_color);
+	free(elem->C_color);
+	i = -1;
+	while (elem->map[++i])
+		free(elem->map[i]);
+	free(elem->map);
+}
+
+int	map_errors(map_list *elem, int e)
+{
+	if (e != 0)
+	{
+		free_errors(elem);
+		write(1, "Error\n", 6);
+		if (e == 1)
+			write(1, "Please close the map\n", 21);
+		else if (e == 2)
+			write(1, "Wrong characters in the map\n", 28);
+		else if (e == 3)
+			write(1, "This is not a map\n", 18);
+		else if (e == 4)
+			write(1, "I can't play doom without a doom guy\n", 37);
+		return (1);
+	}
 	return (0);
 }
-*/
 
 int		main(void)
 {
 	map_list	elem;
 	map_coor	*coor;
+	//map_coor	*cp;
 
-
+	//cp = NULL;
 	if (!(coor = malloc(16)))
 		return (0);
+	//cp = coor;
 	coor->line = NULL;
-	if (read_file(&elem, coor) == 1)
+	if (map_errors(&elem, read_file(&elem, coor)) == 1)
+	{
+		while (coor)
+		{
+			//cp = coor;
+			free(coor->line);
+			free(coor);
+			coor = coor->next;
+		}
 		return (0);
+	}
 	elem.cubs = elem.y / 5;
+	if (map_errors(&elem, create_map(coor, &elem)) == 1)
+	{
+		while (coor)
+		{
+			//cp = coor;
+			free(coor->line);
+			free(coor);
+			coor = coor->next;
+		}
+		return (0);
+	}
 	init_dist_ratios(&elem);
-	create_map(coor, &elem);
 	map_infos(&elem);
 	elem.abr = (M_PI / 3) / elem.x;
 	elem.ptr[0] = mlx_init();
-	//mlx_get_screen_size(elem.ptr[0], elem.sizex, elem.sizey);
+	//mlx_get_screen_size(elem.ptr[0], &(elem.sizex), &(elem.sizey));
 	elem.ptr[1] = mlx_new_window(elem.ptr[0], elem.x, elem.y, "Cub3D");
 	new_texture(&elem);
 	mlx_hook(elem.ptr[1], 2, (1L << 0), key_press_hook, &elem);

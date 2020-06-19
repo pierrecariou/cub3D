@@ -6,7 +6,7 @@
 /*   By: pcariou <pcariou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 13:53:49 by pcariou           #+#    #+#             */
-/*   Updated: 2020/06/10 16:35:09 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/06/19 12:33:36 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,12 +226,12 @@ void	choose_dist(double h, double v, int i, map_list *elem)
 
 int		map_out(map_list *elem, unsigned int *map, int v)
 {
-	if (v == 1 && (map[1] >= (unsigned int)elem->lines || map[0] >= (unsigned int)elem->length))
+	if (v == 1 && (map[1] >= (unsigned int)elem->lines || map[0] >= (unsigned int)ft_strlen(elem->map[map[1]])))
 	{
 		elem->ratio_v = 65;
 		return (1);
 	}
-	else if (v == 0 && (map[1] >= (unsigned int)elem->lines || map[0] >= (unsigned int)elem->length))
+	else if (v == 0 && (map[1] >= (unsigned int)elem->lines || map[0] >= (unsigned int)ft_strlen(elem->map[map[1]])))
 	{
 		elem->ratio_h = 65;
 		return (1);
