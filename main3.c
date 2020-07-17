@@ -6,7 +6,7 @@
 /*   By: pcariou <pcariou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 13:53:49 by pcariou           #+#    #+#             */
-/*   Updated: 2020/06/19 12:33:36 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/07/17 13:46:48 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,6 +192,10 @@ void    trace_rays(map_list *elem)
 			|| ((int)elem->sprites[i].right >= 0 && (int)elem->sprites[i].left < elem->x))
 			insert_sprite(elem, (int *)elem->screen.data_img, i);
 		i--;
+	}
+	if (elem->argc == 2)
+	{
+		save_bmp(elem);
 	}
 	mlx_put_image_to_window(elem->ptr[0], elem->ptr[1], ptr,  0,  0);
 	mlx_destroy_image (elem->ptr[0], ptr);

@@ -6,7 +6,7 @@
 #    By: pcariou <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/18 14:10:41 by pcariou           #+#    #+#              #
-#    Updated: 2020/06/09 18:28:39 by pcariou          ###   ########.fr        #
+#    Updated: 2020/07/16 04:44:51 by pcariou          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,13 +34,14 @@ all:		$(NAME)
 			$(CC) $(CFLAGS) -c $< -o $(<:.c=.o) -I$(HEADER) -I /usr/X11/include -g -L /usr/X11/lib -lX11 -lmlx -lXext
 
 $(NAME):	$(OBJS)
-			$(AR) $(NAME) $(OBJS) && cd libft && make
+			cd libft && make
+			$(CC) -o $(NAME) $(OBJS) libft/libft -lm -lmlx -lXext -lX11 -lbsd
 
 clean:
-			$(RM) $(OBJS) && cd libft && make
+			$(RM) $(OBJS) && cd libft && make clean
 
 fclean:		clean
-			$(RM) $(NAME) && cd libft && make
+			$(RM) $(NAME) && cd libft && make fclean
 
 re:			fclean all
 

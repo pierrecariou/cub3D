@@ -6,7 +6,7 @@
 /*   By: pcariou <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 10:31:53 by pcariou           #+#    #+#             */
-/*   Updated: 2020/06/18 19:03:45 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/07/16 17:54:35 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ typedef struct	t_list
 
 typedef struct	s_list
 {
+	int		argc;
+	char	*argv;
 	int		x;
 	int		y;
 	char	*NO;
@@ -124,5 +126,7 @@ void	map_infos(map_list *elem);
 void    close_win(map_list *elem);
 int		map_out(map_list *elem, unsigned int *map, int v);
 void	computation_v(map_list *elem, unsigned int *map, double *coor);
+int		save_bmp(map_list *elem);
+void	save_bmp2(map_list *elem);
 
 #endif
