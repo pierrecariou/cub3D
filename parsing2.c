@@ -6,7 +6,7 @@
 /*   By: pcariou <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/28 15:24:48 by pcariou           #+#    #+#             */
-/*   Updated: 2020/06/18 18:34:30 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/07/20 00:24:08 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,10 @@ int		read_coor(map_coor *coor, char *line)
 				i++;
 			}
 			else
+			{
+				free(line_coor);
 				return (2);
+			}
 			k++;
 		}
 		//printf("%s\n", line_coor);
@@ -67,7 +70,7 @@ int		read_coor(map_coor *coor, char *line)
 	}
 	else if (line[k] != 'R' && line[k] != 'N' && line[k] != 'S' && line[k] != 'W'
 		&& line[k] != 'E' && line[k] != 'F' && line[k] != 'C' && line[0])
-		return (1);
+		return (6);
 	return (0);
 }
 
@@ -77,6 +80,7 @@ int		read_file(map_list	*elem, map_coor *coor)
 	char		*line;
 	int			i;
 	int			k;
+	int 		r;
 
 	i = 2;
 	k = 0;
@@ -99,10 +103,11 @@ int		read_file(map_list	*elem, map_coor *coor)
 		map_s(elem, line, i, k);
 		map_f(elem, line, i, k);
 		map_c(elem, line, i, k);
-		if (read_coor(coor, line) == 1)
+		r = read_coor(coor, line);
+		if (r != 0)
 		{
 			free(line);
-			return (1);
+			return (r);
 		}
 		free(line);
 	}

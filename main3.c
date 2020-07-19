@@ -6,7 +6,7 @@
 /*   By: pcariou <pcariou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 13:53:49 by pcariou           #+#    #+#             */
-/*   Updated: 2020/07/19 14:59:37 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/07/20 00:23:21 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,20 +78,25 @@ void    insert_texture(map_list *elem, int *p, int *data_bi, int i)
 		data_bi[p[0] + elem->x * p[1]] = elem->t4.data_img[(int)((elem->ratios[p[0]] / 64) * elem->t4.width) + ((int)(i / (elem->sizes[p[0]]) * elem->t4.height) * elem->t4.width)];
 }
 
-void    new_texture(map_list *elem)
+int    new_texture(map_list *elem)
 {
 //	elem->screen.img_ptr = mlx_new_image(elem->ptr[0], elem->x, elem->y);
 //	elem->screen.data_img = (int *)mlx_get_data_addr(elem->screen.img_ptr, &elem->screen.bits_per_pixel, &elem->screen.size_line, &elem->screen.endian);
-	elem->t1.img_ptr = mlx_xpm_file_to_image(elem->ptr[0], elem->NO, &(elem->t1.width), &(elem->t1.height));
-	elem->t1.data_img = (int *)mlx_get_data_addr(elem->t1.img_ptr, &(elem->t1.bits_per_pixel), &(elem->t1.size_line), &(elem->t1.endian));
-	elem->t2.img_ptr = mlx_xpm_file_to_image(elem->ptr[0], elem->SO, &(elem->t2.width), &(elem->t2.height));
-	elem->t2.data_img = (int *)mlx_get_data_addr(elem->t2.img_ptr, &(elem->t2.bits_per_pixel), &(elem->t2.size_line), &(elem->t2.endian));
-	elem->t3.img_ptr = mlx_xpm_file_to_image(elem->ptr[0], elem->EA, &(elem->t3.width), &(elem->t3.height));
-	elem->t3.data_img = (int *)mlx_get_data_addr(elem->t3.img_ptr, &(elem->t3.bits_per_pixel), &(elem->t3.size_line), &(elem->t3.endian));
-	elem->t4.img_ptr = mlx_xpm_file_to_image(elem->ptr[0], elem->WE, &(elem->t4.width), &(elem->t4.height));
-	elem->t4.data_img = (int *)mlx_get_data_addr(elem->t4.img_ptr, &(elem->t4.bits_per_pixel), &(elem->t4.size_line), &(elem->t4.endian));
-	elem->sprite.img_ptr = mlx_xpm_file_to_image(elem->ptr[0], elem->S, &(elem->sprite.width), &(elem->sprite.height));
-	elem->sprite.data_img = (int *)mlx_get_data_addr(elem->sprite.img_ptr, &(elem->sprite.bits_per_pixel), &(elem->sprite.size_line), &(elem->sprite.endian));	
+	if (!(elem->sprite.img_ptr = mlx_xpm_file_to_image(elem->ptr[0], elem->S, &(elem->sprite.width), &(elem->sprite.height))) ||
+		!(elem->t1.img_ptr = mlx_xpm_file_to_image(elem->ptr[0], elem->NO, &(elem->t1.width), &(elem->t1.height))) ||
+		!(elem->t2.img_ptr = mlx_xpm_file_to_image(elem->ptr[0], elem->SO, &(elem->t2.width), &(elem->t2.height))) ||
+		!(elem->t3.img_ptr = mlx_xpm_file_to_image(elem->ptr[0], elem->EA, &(elem->t3.width), &(elem->t3.height))) ||
+		!(elem->t4.img_ptr = mlx_xpm_file_to_image(elem->ptr[0], elem->WE, &(elem->t4.width), &(elem->t4.height))))
+		return (5);
+	else
+	{
+		elem->sprite.data_img = (int *)mlx_get_data_addr(elem->sprite.img_ptr, &(elem->sprite.bits_per_pixel), &(elem->sprite.size_line), &(elem->sprite.endian));	
+		elem->t1.data_img = (int *)mlx_get_data_addr(elem->t1.img_ptr, &(elem->t1.bits_per_pixel), &(elem->t1.size_line), &(elem->t1.endian));
+		elem->t2.data_img = (int *)mlx_get_data_addr(elem->t2.img_ptr, &(elem->t2.bits_per_pixel), &(elem->t2.size_line), &(elem->t2.endian));
+		elem->t3.data_img = (int *)mlx_get_data_addr(elem->t3.img_ptr, &(elem->t3.bits_per_pixel), &(elem->t3.size_line), &(elem->t3.endian));
+		elem->t4.data_img = (int *)mlx_get_data_addr(elem->t4.img_ptr, &(elem->t4.bits_per_pixel), &(elem->t4.size_line), &(elem->t4.endian));
+	}
+	return (0);
 }
 
 void    sort_sprites(map_list *elem)
@@ -197,7 +202,7 @@ void    trace_rays(map_list *elem)
 		save_bmp(elem);
 	else
 		mlx_put_image_to_window(elem->ptr[0], elem->ptr[1], ptr,  0,  0);
-	mlx_destroy_image (elem->ptr[0], ptr);
+	mlx_destroy_image(elem->ptr[0], ptr);
 }
 
 void	choose_dist(double h, double v, int i, map_list *elem)

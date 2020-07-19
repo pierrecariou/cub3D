@@ -6,7 +6,7 @@
 /*   By: pcariou <pcariou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 18:15:16 by pcariou           #+#    #+#             */
-/*   Updated: 2020/06/11 16:07:35 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/07/19 21:03:36 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,13 @@ void	call_all_rays(map_list *elem)
 	trace_rays(elem);
 }
 
+/*
 void	close_win(map_list *elem)
 {
-	int i;
 
-	i = -1;
+	//int i;
+
+	//i = -1;
 	if (elem->key_down[65307])
 	{
 	free(elem->NO);
@@ -101,8 +103,9 @@ void	close_win(map_list *elem)
 	mlx_clear_window (elem->ptr[0], elem->ptr[1]);
 	mlx_destroy_window (elem->ptr[0], elem->ptr[1]);
 	exit(0);
-	}
+	 }
 }
+*/
 
 void	init_dist_ratios(map_list *elem)
 {

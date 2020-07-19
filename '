@@ -6,7 +6,7 @@
 /*   By: pcariou <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 10:31:53 by pcariou           #+#    #+#             */
-/*   Updated: 2020/07/19 23:57:48 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/07/19 21:04:42 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int		create_map(map_coor *coor, map_list *elem);
 double	finding_h(map_list *elem);
 void	map_infos1(map_list *elem, int x, int y, int k);
 double	finding_v(map_list *elem);
-int		new_texture(map_list *elem);
+void	new_texture(map_list *elem);
 void    choose_dist(double h, double v, int i, map_list *elem);
 void    trace_rays(map_list *elem);
 void	key_action1(map_list *elem);

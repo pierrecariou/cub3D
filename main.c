@@ -6,7 +6,7 @@
 /*   By: pcariou <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/19 08:54:40 by pcariou           #+#    #+#             */
-/*   Updated: 2020/07/19 15:09:27 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/07/20 00:25:13 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ int		loop(map_list *elem)
 	else if (elem->cr > 2 * M_PI)
 		elem->cr -= 2 * M_PI;
 	call_all_rays(elem);
-	close_win(elem);
+	if (elem->key_down[65307])
+		close_w(elem);
 	return (0);
 }
 
@@ -88,10 +89,10 @@ int		key_release_hook(int key, map_list *elem)
 	return (0);
 }
 
-int close_w(void *param)
+int close_w(map_list *elem)
 {
-	write(1, "a", 1);;
-	(void)param;
+	// mlx_destroy_window(elem->ptr[0], elem->ptr[1]);
+	(void)elem;
 	exit(0);
 	return (0);
 }
@@ -104,6 +105,7 @@ int close_w(void *param)
    return (0);
    }
  */
+/*
 void	free_errors(map_list *elem)
 {
 	int i;
@@ -128,12 +130,14 @@ void	free_errors(map_list *elem)
 		free(elem->map[i]);
 	free(elem->map);
 }
+*/
 
 int	map_errors(map_list *elem, int e)
 {
+	(void)elem;
 	if (e != 0)
 	{
-		free_errors(elem);
+		// free_errors(elem);
 		write(1, "Error\n", 6);
 		if (e == 1)
 			write(1, "Please close the map\n", 21);
@@ -143,6 +147,10 @@ int	map_errors(map_list *elem, int e)
 			write(1, "This is not a map\n", 18);
 		else if (e == 4)
 			write(1, "I can't play doom without a doom guy\n", 37);
+		else if (e == 5)
+			write(1, "XPM file not found\n", 19);
+		else if (e == 6)
+			write(1, "Wrong line\n", 11);
 		return (1);
 	}
 	return (0);
@@ -165,6 +173,7 @@ void	raw_pixel_data(map_list *elem, int fd)
 		k = 0;
 		i--;
 	}
+	close_w(elem);
 }
 
 void	img_info_data(map_list *elem, int fd)
@@ -266,6 +275,7 @@ int		main(int argc, char **argv)
 	coor->line = NULL;
 	if (map_errors(&elem, read_file(&elem, coor)) == 1)
 	{
+		/*
 		while (coor)
 		{
 			//cp = coor;
@@ -273,11 +283,14 @@ int		main(int argc, char **argv)
 			free(coor);
 			coor = coor->next;
 		}
+		*/
+		close_w(&elem);
 		return (0);
 	}
 	elem.cubs = elem.y / 5;
 	if (map_errors(&elem, create_map(coor, &elem)) == 1)
 	{
+		/*
 		while (coor)
 		{
 			//cp = coor;
@@ -285,6 +298,8 @@ int		main(int argc, char **argv)
 			free(coor);
 			coor = coor->next;
 		}
+		*/
+		close_w(&elem);
 		return (0);
 	}
 	init_dist_ratios(&elem);
@@ -292,8 +307,11 @@ int		main(int argc, char **argv)
 	elem.abr = (M_PI / 3) / elem.x;
 	elem.ptr[0] = mlx_init();
 	//mlx_get_screen_size(elem.ptr[0], &(elem.sizex), &(elem.sizey));
-
-	new_texture(&elem);
+	if (map_errors(&elem , new_texture(&elem)) == 1)
+	{
+		close_w(&elem);
+		return (0);
+	}
 	if (!(save(&elem)))
 		elem.ptr[1] = mlx_new_window(elem.ptr[0], elem.x, elem.y, "Cub3D");
 	else
@@ -303,7 +321,7 @@ int		main(int argc, char **argv)
 	}
 	mlx_hook(elem.ptr[1], 2, (1L << 0), key_press_hook, &elem);
 	mlx_hook(elem.ptr[1], 3, (1L << 1), key_release_hook, &elem);
-	//mlx_hook(elem.ptr[0], 4, 1L<<5, close, &elem);
+	// mlx_hook(elem.ptr[0], 4, 1L<<5, close, &elem);
 	mlx_hook(elem.ptr[1], 17, (1L << 17), close_w, &elem);
 	mlx_loop_hook(elem.ptr[0], loop, &elem);
 	mlx_loop(elem.ptr[0]);
