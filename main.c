@@ -6,7 +6,7 @@
 /*   By: pcariou <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/19 08:54:40 by pcariou           #+#    #+#             */
-/*   Updated: 2020/07/17 18:17:45 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/07/19 15:09:27 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,16 +148,62 @@ int	map_errors(map_list *elem, int e)
 	return (0);
 }
 
-void	save_bmp2(map_list *elem)
+void	raw_pixel_data(map_list *elem, int fd)
+{
+	int i;
+	int k;
+
+	i = elem->y - 1;
+	k = 0;
+	while (i >= 0)
+	{
+		while (k < elem->x)
+		{
+			write(fd, &elem->screen.data_img[k + i * elem->x], 4);
+			k++;
+		}
+		k = 0;
+		i--;
+	}
+}
+
+void	img_info_data(map_list *elem, int fd)
+{
+	unsigned int header_size;
+	unsigned int planes_count;
+	unsigned int bpp;
+	unsigned int zero;
+
+	header_size = 40;
+	planes_count = 1;
+	bpp = elem->screen.bits_per_pixel;
+	zero = 0;
+
+	write(fd, &header_size, 4);
+	write(fd, &elem->x, 4);
+	write(fd, &elem->y, 4);
+	write(fd, &planes_count, 2);
+	write(fd, &bpp, 2);
+	write(fd, &zero, 4);
+	write(fd, &zero, 4);
+	write(fd, &zero, 4);
+	write(fd, &zero, 4);
+	write(fd, &zero, 4);
+	write(fd, &zero, 4);
+	write(fd, &zero, 4);
+	raw_pixel_data(elem, fd);
+}
+
+void	save_bmp(map_list *elem)
 {
 	// printf("%d\n", elem->screen.bits_per_pixel / 8);
 	int fd;
 	unsigned int file_size;
 	unsigned int pixel_data_offset;
 	unsigned int zero;
-	
+
 	zero = 0;
-	file_size = 58 + (elem->screen.width * elem->screen.height) * (elem->screen.bits_per_pixel / 8);
+	file_size = 58 + (elem->x * elem->y) * (elem->screen.bits_per_pixel / 8);
 	pixel_data_offset = 58;
 	fd = open("Cub3D.bmp", O_CREAT | O_RDWR | O_TRUNC , S_IRUSR | S_IWUSR);
 	write(fd, "BM", 2);
@@ -165,27 +211,29 @@ void	save_bmp2(map_list *elem)
 	write(fd, &zero, 2);
 	write(fd, &zero, 2);
 	write(fd, &pixel_data_offset, 4);
-	printf("%d save!!\n", fd);
+	img_info_data(elem, fd);
+	// printf("%d save!!\n", fd);
 	close(fd);
-	elem->argc = 1;
 }
 
-int		save_bmp(map_list *elem)
+int		save(map_list *elem)
 {
 	int i;
 	char str[7] = "--save";
 
 	i = 0;
-	if (ft_strlen(elem->argv) == 6)
+	if (elem->argc >= 2)
 	{
-		while (elem->argv[i])
+		if (ft_strlen(elem->argv) == 6)
 		{
-			if (elem->argv[i] != str[i])
-				return (0);
-			i++;
+			while (elem->argv[i])
+			{
+				if (elem->argv[i] != str[i])
+					return (0);
+				i++;
+			}
+			return (1);
 		}
-	save_bmp2(elem);
-	return (1);
 	}
 	return (0);
 }
@@ -244,15 +292,15 @@ int		main(int argc, char **argv)
 	elem.abr = (M_PI / 3) / elem.x;
 	elem.ptr[0] = mlx_init();
 	//mlx_get_screen_size(elem.ptr[0], &(elem.sizex), &(elem.sizey));
-	elem.ptr[1] = mlx_new_window(elem.ptr[0], elem.x, elem.y, "Cub3D");
+
 	new_texture(&elem);
-	/*
-	   if (argc == 2)
-	   {
-	   if (save_bmp(argv[1], &elem) == 1)
-	   return (0);
-	   }
-	 */
+	if (!(save(&elem)))
+		elem.ptr[1] = mlx_new_window(elem.ptr[0], elem.x, elem.y, "Cub3D");
+	else
+	{
+		loop(&elem);
+		return (0);
+	}
 	mlx_hook(elem.ptr[1], 2, (1L << 0), key_press_hook, &elem);
 	mlx_hook(elem.ptr[1], 3, (1L << 1), key_release_hook, &elem);
 	//mlx_hook(elem.ptr[0], 4, 1L<<5, close, &elem);
