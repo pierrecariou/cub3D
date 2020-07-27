@@ -6,7 +6,7 @@
 /*   By: pcariou <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/28 15:21:21 by pcariou           #+#    #+#             */
-/*   Updated: 2020/07/27 02:29:00 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/07/27 18:45:11 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	count_map(map_coor *coor, map_list *elem)
 	elem->lines = lines;
 }
 
-int 	check_map(map_list *elem)
+int		check_map(map_list *elem)
 {
 	int i;
 	int k;
@@ -56,9 +56,16 @@ int 	check_map(map_list *elem)
 	{
 		while (elem->map[i][k])
 		{
-			if ((elem->map[i][k] == ' ' && elem->map[i][k + 1] && (elem->map[i][k + 1] != ' ' && elem->map[i][k + 1] != '1')) || (elem->map[i][k] == ' ' && k != 0 && (elem->map[i][k - 1] != ' ' && elem->map[i][k - 1] != '1')))
+			if ((elem->map[i][k] == ' ' && elem->map[i][k + 1] &&
+				(elem->map[i][k + 1] != ' ' && elem->map[i][k + 1]
+				!= '1')) || (elem->map[i][k] == ' ' && k != 0 &&
+				(elem->map[i][k - 1] != ' ' && elem->map[i][k - 1] != '1')))
 				return (1);
-			if ((elem->map[i][k] == ' ' && elem->map[i + 1] && elem->map[i + 1][k] && (elem->map[i + 1][k] != ' ' && elem->map[i + 1][k] != '1')) || (elem->map[i][k] == ' ' && i != 0 && elem->map[i - 1][k] && (elem->map[i - 1][k] != ' ' && elem->map[i - 1][k] != '1')))
+			if ((elem->map[i][k] == ' ' && elem->map[i + 1] && elem->map
+				[i + 1][k] && (elem->map[i + 1][k] != ' ' && elem->map
+				[i + 1][k] != '1')) || (elem->map[i][k] == ' ' && i != 0
+				&& elem->map[i - 1][k] && (elem->map[i - 1][k] != ' ' &&
+				elem->map[i - 1][k] != '1')))
 				return (1);
 			k++;
 		}
@@ -83,7 +90,8 @@ int 	check_map(map_list *elem)
 		{
 			if (elem->map[i][k] == ' ')
 				elem->map[i][k] = '1';
-			if (elem->map[i][k] == 'N' || elem->map[i][k] == 'W' || elem->map[i][k] == 'S' || elem->map[i][k] == 'E')
+			if (elem->map[i][k] == 'N' || elem->map[i][k] == 'W' ||
+				elem->map[i][k] == 'S' || elem->map[i][k] == 'E')
 				c++;
 			if ((i == 0 || !elem->map[i + 1]) && elem->map[i][k] != '1')
 				return (1);
@@ -106,7 +114,7 @@ int		create_map(map_coor *coor, map_list *elem)
 	map_coor	*cp;
 	int			i;
 	int			k;
-	int 		length;
+	int			length;
 
 	i = 0;
 	k = 0;
@@ -131,32 +139,39 @@ int		create_map(map_coor *coor, map_list *elem)
 	return (check_map(elem));
 }
 
-int		map_c(map_list *elem, char *line, int i, int k)
+int		c_fill(map_list *elem, char *line, int i, int k)
 {
 	int l;
 
 	l = 0;
+	while (line[i])
+	{
+		if (!((elem->C)[l] = malloc(4)))
+			return (0);
+		while (line[i] != ',' && line[i])
+		{
+			if (k > 2 || !(ft_isdigit(line[i])))
+				return (0);
+			(elem->C)[l][k] = line[i];
+			k++;
+			i++;
+		}
+		(elem->C)[l][k] = 0;
+		k = 0;
+		l++;
+		i++;
+	}
+	return (1);
+}
+
+int		map_c(map_list *elem, char *line, int i, int k)
+{
 	if (line[0] == 'C' && line[1] == ' ')
 	{
 		while (line[i] == ' ')
 			i++;
-		while (line[i])
-		{
-			if (!((elem->C)[l] = malloc(4)))
-				return (0);
-			while (line[i] != ',' && line[i])
-			{
-				if (k > 2 || !(ft_isdigit(line[i])))
-					return (0);
-				(elem->C)[l][k] = line[i];
-				k++;
-				i++;
-			}
-			(elem->C)[l][k] = 0;
-			k = 0;
-			l++;
-			i++;
-		}
+		if (!(c_fill(elem, line, i, k)))
+			return (0);
 		i = -1;
 		while (++i < 3)
 			elem->C_color[i] = ft_atoi(elem->C[i]);
@@ -166,32 +181,39 @@ int		map_c(map_list *elem, char *line, int i, int k)
 		return (0);
 }
 
-int		map_f(map_list *elem, char *line, int i, int k)
+int		f_fill(map_list *elem, char *line, int i, int k)
 {
 	int l;
 
 	l = 0;
+	while (line[i])
+	{
+		if (!((elem->F)[l] = malloc(4)))
+			return (0);
+		while (line[i] != ',' && line[i])
+		{
+			if (k > 2 || !(ft_isdigit(line[i])))
+				return (0);
+			(elem->F)[l][k] = line[i];
+			k++;
+			i++;
+		}
+		(elem->F)[l][k] = 0;
+		k = 0;
+		l++;
+		i++;
+	}
+	return (1);
+}
+
+int		map_f(map_list *elem, char *line, int i, int k)
+{
 	if (line[0] == 'F' && line[1] == ' ')
 	{
 		while (line[i] == ' ')
 			i++;
-		while (line[i])
-		{
-			if (!((elem->F)[l] = malloc(4)))
-				return (0);
-			while (line[i] != ',' && line[i])
-			{
-				if (k > 2 || !(ft_isdigit(line[i])))
-					return (0);
-				(elem->F)[l][k] = line[i];
-				k++;
-				i++;
-			}
-			(elem->F)[l][k] = 0;
-			k = 0;
-			l++;
-			i++;
-		}
+		if (!(f_fill(elem, line, i, k)))
+			return (0);
 		i = -1;
 		while (++i < 3)
 			elem->F_color[i] = ft_atoi(elem->F[i]);

@@ -6,7 +6,7 @@
 /*   By: pcariou <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/28 15:14:32 by pcariou           #+#    #+#             */
-/*   Updated: 2020/07/20 22:22:49 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/07/27 16:39:18 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,32 @@ int		map_no(map_list *elem, char *line, int i, int k)
 		return (0);
 }
 
-int		map_x_y(map_list *elem, char *line, int i, int k)
+int		x_y_fill(map_list *elem, char *line, int i, char *x_y)
+{
+	int		k;
+	char	c;
+
+	k = 0;
+	c = (i == 2) ? 'x' : 'y';
+	while (line[i] == ' ')
+		i++;
+	while (line[i] && line[i] != ' ')
+	{
+		if (!(ft_isdigit(line[i])))
+			return (0);
+		x_y[k] = line[i];
+		k++;
+		i++;
+	}
+	x_y[k] = 0;
+	if (c == 'x')
+		elem->x = ft_atoi(x_y);
+	else
+		elem->y = ft_atoi(x_y);
+	return (i);
+}
+
+int		map_x_y(map_list *elem, char *line, int i)
 {
 	char	*x;
 	char	*y;
@@ -107,39 +132,13 @@ int		map_x_y(map_list *elem, char *line, int i, int k)
 			return (0);
 		if (!(y = malloc(5)))
 			return (0);
-		while (line[i] == ' ')
-			i++;
-		while (line[i] && line[i] != ' ')
+		if (x_y_fill(elem, line, i, y) == 0 ||
+			x_y_fill(elem, line, x_y_fill(elem, line, i, y), y) == 0)
 		{
-			if (!(ft_isdigit(line[i])))
-			{
-				free(x);
-				free(y);
-				return(0);
-			}
-			x[k] = line[i];
-			k++;
-			i++;
+			free(x);
+			free(y);
+			return (0);
 		}
-		x[k] = 0;
-		elem->x = ft_atoi(x);
-		while (line[i] == ' ')
-			i++;
-		k = 0;
-		while (line[i] && line[i] != ' ')
-		{
-			if (!(ft_isdigit(line[i])))
-			{
-				free(x);
-				free(y);
-				return (0);
-			}
-			y[k] = line[i];
-			k++;
-			i++;
-		}
-		y[k] = 0;
-		elem->y = ft_atoi(y);
 		free(x);
 		free(y);
 		return (1);

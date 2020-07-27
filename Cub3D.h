@@ -6,7 +6,7 @@
 /*   By: pcariou <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 10:31:53 by pcariou           #+#    #+#             */
-/*   Updated: 2020/07/27 03:02:14 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/07/27 16:01:53 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int		map_ea(map_list *elem, char *line, int i, int k);
 int		map_we(map_list *elem, char *line, int i, int k);
 int		map_so(map_list *elem, char *line, int i, int k);
 int		map_no(map_list *elem, char *line, int i, int k);
-int		map_x_y(map_list *elem, char *line, int i, int k);
+int		map_x_y(map_list *elem, char *line, int i);
 int		map_c(map_list *elem, char *line, int i, int k);
 int		map_f(map_list *elem, char *line, int i, int k);
 int		map_s(map_list *elem, char *line, int i, int k);
