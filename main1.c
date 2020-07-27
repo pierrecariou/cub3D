@@ -6,7 +6,7 @@
 /*   By: pcariou <pcariou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 18:15:16 by pcariou           #+#    #+#             */
-/*   Updated: 2020/07/19 21:03:36 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/07/27 03:26:39 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,50 +63,6 @@ void	call_all_rays(map_list *elem)
 	trace_rays(elem);
 }
 
-/*
-void	close_win(map_list *elem)
-{
-
-	//int i;
-
-	//i = -1;
-	if (elem->key_down[65307])
-	{
-	free(elem->NO);
-	free(elem->SO);
-		free(elem->WE);
-	free(elem->EA);
-	free(elem->S);
-	while (++i < 3)
-	{
-		free(elem->F[i]);
-		free(elem->C[i]);
-	}
-	free(elem->F);
-	free(elem->C);
-	free(elem->F_color);
-	free(elem->C_color);
-	i = -1;
-	while (elem->map[++i])
-		free(elem->map[i]);
-	free(elem->map);
-	free(elem->dist);
-	free(elem->ratios);
-	free(elem->sizes);
-	free(elem->orient);
-	free(elem->key_down);
-	mlx_destroy_image(elem->ptr[0], elem->t1.img_ptr);	
-	mlx_destroy_image(elem->ptr[0], elem->t2.img_ptr);
-	mlx_destroy_image(elem->ptr[0], elem->t3.img_ptr);
-	mlx_destroy_image(elem->ptr[0], elem->t4.img_ptr);
-	mlx_destroy_image(elem->ptr[0], elem->sprite.img_ptr);
-	mlx_clear_window (elem->ptr[0], elem->ptr[1]);
-	mlx_destroy_window (elem->ptr[0], elem->ptr[1]);
-	exit(0);
-	 }
-}
-*/
-
 void	init_dist_ratios(map_list *elem)
 {
 	int i;
@@ -132,38 +88,19 @@ void	init_dist_ratios(map_list *elem)
 
 void	key_action1(map_list *elem)
 {
-	if (elem->key_down[97])
-	{
-		if ((elem->map[(int)((elem->posy - sin(elem->rad +
-				M_PI_2) * 5) / 64)][(int)((elem->posx +
-				cos(elem->rad + M_PI_2) * 5) / 64)] != '1') && 
-				(sqrt(pow((elem->posx + cos(elem->rad + M_PI_2) * 5) - elem->sprites[0].x, 2)
-				  + pow((elem->posy - sin(elem->rad + M_PI_2) * 5)  -
-				 elem->sprites[0].y, 2)) * 0.9 >= (elem->cubs / 6) ))
-		{
-			elem->posx += cos(elem->rad + M_PI_2) * 5;
-			elem->posy -= sin(elem->rad + M_PI_2) * 5;
-			//elem->b = 1;
-		}
-	}
 	if (elem->key_down[100])
 	{
-		if ((elem->map[(int)((elem->posy + sin(elem->rad +
-							M_PI_2) * 5) / 64)][(int)((elem->posx -
-							cos(elem->rad + M_PI_2) * 5) / 64)] != '1') && 
-				(sqrt(pow((elem->posx - cos(elem->rad + M_PI_2) * 5) - elem->sprites[0].x, 2)
-				  + pow((elem->posy + sin(elem->rad + M_PI_2) * 5)  -
-				 elem->sprites[0].y, 2)) * 0.9 >= (elem->cubs / 6) ))
- 
+		if ((elem->map[(int)((elem->posy + sin(elem->rad + M_PI_2) * 5) / 64)]
+				[(int)((elem->posx - cos(elem->rad + M_PI_2) * 5) / 64)] != '1')
+				&& (sqrt(pow((elem->posx - cos(elem->rad + M_PI_2) * 5) -
+				elem->sprites[0].x, 2) + pow((elem->posy + sin(elem->rad
+				+ M_PI_2) * 5) - elem->sprites[0].y, 2)) * 0.9 >=
+				(elem->cubs / 6)))
 		{
 			elem->posx -= cos(elem->rad + M_PI_2) * 5;
 			elem->posy += sin(elem->rad + M_PI_2) * 5;
-			//elem->b = 1;
 		}
 	}
 	if (elem->key_down[65361])
-	{
 		elem->rad += 0.04;
-		//elem->b = 1;
-	}
 }

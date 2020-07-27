@@ -6,19 +6,20 @@
 /*   By: pcariou <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/28 15:14:32 by pcariou           #+#    #+#             */
-/*   Updated: 2020/06/09 19:51:54 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/07/20 22:22:49 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Cub3D.h"
 
-void	map_ea(map_list *elem, char *line, int i, int k)
+int		map_ea(map_list *elem, char *line, int i, int k)
 {
 	if (line[0] == 'E' && line[1] == 'A' && line[2] == ' ')
 	{
-		i++;
-		if (!(elem->EA = malloc(ft_strlen(line) - 2)))
-			return ;
+		while (line[i] == ' ')
+			i++;
+		if (!(elem->EA = malloc(ft_strlen(line) - i + 1)))
+			return (0);
 		while (line[i] != ' ' && line[i])
 		{
 			(elem->EA)[k] = line[i];
@@ -26,16 +27,20 @@ void	map_ea(map_list *elem, char *line, int i, int k)
 			i++;
 		}
 		(elem->EA)[k] = 0;
+		return (1);
 	}
+	else
+		return (0);
 }
 
-void	map_we(map_list *elem, char *line, int i, int k)
+int		map_we(map_list *elem, char *line, int i, int k)
 {
 	if (line[0] == 'W' && line[1] == 'E' && line[2] == ' ')
 	{
-		i++;
-		if (!(elem->WE = malloc(ft_strlen(line) - 2)))
-			return ;
+		while (line[i] == ' ')
+			i++;
+		if (!(elem->WE = malloc(ft_strlen(line) - i + 1)))
+			return (0);
 		while (line[i] != ' ' && line[i])
 		{
 			(elem->WE)[k] = line[i];
@@ -43,16 +48,20 @@ void	map_we(map_list *elem, char *line, int i, int k)
 			i++;
 		}
 		(elem->WE)[k] = 0;
+		return (1);
 	}
+	else
+		return (0);
 }
 
-void	map_so(map_list *elem, char *line, int i, int k)
+int		map_so(map_list *elem, char *line, int i, int k)
 {
 	if (line[0] == 'S' && line[1] == 'O' && line[2] == ' ')
 	{
-		i++;
-		if (!(elem->SO = malloc(ft_strlen(line) - 2)))
-			return ;
+		while (line[i] == ' ')
+			i++;
+		if (!(elem->SO = malloc(ft_strlen(line) - i + 1)))
+			return (0);
 		while (line[i] != ' ' && line[i])
 		{
 			(elem->SO)[k] = line[i];
@@ -60,16 +69,20 @@ void	map_so(map_list *elem, char *line, int i, int k)
 			i++;
 		}
 		(elem->SO)[k] = 0;
+		return (1);
 	}
+	else
+		return (0);
 }
 
-void	map_no(map_list *elem, char *line, int i, int k)
+int		map_no(map_list *elem, char *line, int i, int k)
 {
 	if (line[0] == 'N' && line[1] == 'O' && line[2] == ' ')
 	{
-		i++;
-		if (!(elem->NO = malloc(ft_strlen(line) - 2)))
-			return ;
+		while (line[i] == ' ')
+			i++;
+		if (!(elem->NO = malloc(ft_strlen(line) - i + 2)))
+			return (0);
 		while (line[i] != ' ' && line[i])
 		{
 			(elem->NO)[k] = line[i];
@@ -77,10 +90,13 @@ void	map_no(map_list *elem, char *line, int i, int k)
 			i++;
 		}
 		(elem->NO)[k] = 0;
+		return (1);
 	}
+	else
+		return (0);
 }
 
-void	map_x_y(map_list *elem, char *line, int i, int k)
+int		map_x_y(map_list *elem, char *line, int i, int k)
 {
 	char	*x;
 	char	*y;
@@ -88,11 +104,19 @@ void	map_x_y(map_list *elem, char *line, int i, int k)
 	if (line[0] == 'R' && line[1] == ' ')
 	{
 		if (!(x = malloc(5)))
-			return ;
+			return (0);
 		if (!(y = malloc(5)))
-			return ;
-		while (ft_isdigit(line[i]) == 1)
+			return (0);
+		while (line[i] == ' ')
+			i++;
+		while (line[i] && line[i] != ' ')
 		{
+			if (!(ft_isdigit(line[i])))
+			{
+				free(x);
+				free(y);
+				return(0);
+			}
 			x[k] = line[i];
 			k++;
 			i++;
@@ -102,8 +126,14 @@ void	map_x_y(map_list *elem, char *line, int i, int k)
 		while (line[i] == ' ')
 			i++;
 		k = 0;
-		while (ft_isdigit(line[i]) == 1)
+		while (line[i] && line[i] != ' ')
 		{
+			if (!(ft_isdigit(line[i])))
+			{
+				free(x);
+				free(y);
+				return (0);
+			}
 			y[k] = line[i];
 			k++;
 			i++;
@@ -112,5 +142,8 @@ void	map_x_y(map_list *elem, char *line, int i, int k)
 		elem->y = ft_atoi(y);
 		free(x);
 		free(y);
+		return (1);
 	}
+	else
+		return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: pcariou <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/28 15:24:48 by pcariou           #+#    #+#             */
-/*   Updated: 2020/07/20 00:24:08 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/07/27 02:37:17 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,25 @@ int		read_coor(map_coor *coor, char *line)
 		lst_new(line_coor, coor);
 	}
 	else if (line[k] != 'R' && line[k] != 'N' && line[k] != 'S' && line[k] != 'W'
-		&& line[k] != 'E' && line[k] != 'F' && line[k] != 'C' && line[0])
+			&& line[k] != 'E' && line[k] != 'F' && line[k] != 'C' && line[0])
 		return (6);
+	else
+		return (8);
 	return (0);
+}
+
+int		check_rgb(unsigned int	*color)
+{
+	int i;
+
+	i = -1;
+	while (++i < 3)
+	{
+		if (color[i] > 255)
+			return (1);
+	}
+	return (0);
+
 }
 
 int		read_file(map_list	*elem, map_coor *coor)
@@ -81,9 +97,11 @@ int		read_file(map_list	*elem, map_coor *coor)
 	int			i;
 	int			k;
 	int 		r;
+	int			elems;
 
 	i = 2;
 	k = 0;
+	elems = 0;
 	if (!(elem->F = malloc(sizeof(char *) * 3)))
 		return (0);
 	if (!(elem->C = malloc(sizeof(char *) * 3)))
@@ -95,21 +113,34 @@ int		read_file(map_list	*elem, map_coor *coor)
 	fd = open("./map.cub", O_RDONLY);
 	while (get_next_line(fd, &line) == 1)
 	{
-		map_x_y(elem, line, i, k);
-		map_no(elem, line, i, k);
-		map_so(elem, line, i, k);
-		map_we(elem, line, i, k);
-		map_ea(elem, line, i, k);
-		map_s(elem, line, i, k);
-		map_f(elem, line, i, k);
-		map_c(elem, line, i, k);
-		r = read_coor(coor, line);
-		if (r != 0)
+		if (elems < 8)
 		{
-			free(line);
-			return (r);
+			elems += map_x_y(elem, line, i, k);
+			elems += map_no(elem, line, i, k);
+			elems += map_so(elem, line, i, k);
+			elems += map_we(elem, line, i, k);
+			elems += map_ea(elem, line, i, k);
+			elems += map_s(elem, line, i, k);
+			elems += map_f(elem, line, i, k);
+			elems += map_c(elem, line, i, k);
+		}
+		else if (elems == 8 && line[0] == 0)
+			elems = 8;
+		else
+		{
+			if ((r = read_coor(coor, line)) != 0)
+			{
+				free(line);
+				return (r);
+			}
+			elems++;
 		}
 		free(line);
 	}
-	return (0);
+	r = (elems <= 8) ? 7 : 0;
+	if (r == 0)
+		r = (check_rgb(elem->F_color)) ? 9 : 0;
+	if (r == 0)
+	r = (check_rgb(elem->C_color)) ? 9 : 0;
+	return (r);
 }

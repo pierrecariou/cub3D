@@ -6,7 +6,7 @@
 /*   By: pcariou <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/28 15:21:21 by pcariou           #+#    #+#             */
-/*   Updated: 2020/06/18 19:03:16 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/07/27 02:29:00 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,19 +131,23 @@ int		create_map(map_coor *coor, map_list *elem)
 	return (check_map(elem));
 }
 
-void	map_c(map_list *elem, char *line, int i, int k)
+int		map_c(map_list *elem, char *line, int i, int k)
 {
 	int l;
 
 	l = 0;
 	if (line[0] == 'C' && line[1] == ' ')
 	{
+		while (line[i] == ' ')
+			i++;
 		while (line[i])
 		{
 			if (!((elem->C)[l] = malloc(4)))
-				return ;
+				return (0);
 			while (line[i] != ',' && line[i])
 			{
+				if (k > 2 || !(ft_isdigit(line[i])))
+					return (0);
 				(elem->C)[l][k] = line[i];
 				k++;
 				i++;
@@ -156,22 +160,29 @@ void	map_c(map_list *elem, char *line, int i, int k)
 		i = -1;
 		while (++i < 3)
 			elem->C_color[i] = ft_atoi(elem->C[i]);
+		return (1);
 	}
+	else
+		return (0);
 }
 
-void	map_f(map_list *elem, char *line, int i, int k)
+int		map_f(map_list *elem, char *line, int i, int k)
 {
 	int l;
 
 	l = 0;
 	if (line[0] == 'F' && line[1] == ' ')
 	{
+		while (line[i] == ' ')
+			i++;
 		while (line[i])
 		{
 			if (!((elem->F)[l] = malloc(4)))
-				return ;
+				return (0);
 			while (line[i] != ',' && line[i])
 			{
+				if (k > 2 || !(ft_isdigit(line[i])))
+					return (0);
 				(elem->F)[l][k] = line[i];
 				k++;
 				i++;
@@ -184,15 +195,20 @@ void	map_f(map_list *elem, char *line, int i, int k)
 		i = -1;
 		while (++i < 3)
 			elem->F_color[i] = ft_atoi(elem->F[i]);
+		return (1);
 	}
+	else
+		return (0);
 }
 
-void	map_s(map_list *elem, char *line, int i, int k)
+int		map_s(map_list *elem, char *line, int i, int k)
 {
 	if (line[0] == 'S' && line[1] == ' ')
 	{
-		if (!(elem->S = malloc(ft_strlen(line) - 1)))
-			return ;
+		while (line[i] == ' ')
+			i++;
+		if (!(elem->S = malloc(ft_strlen(line) - i + 1)))
+			return (0);
 		while (line[i] != ' ' && line[i])
 		{
 			(elem->S)[k] = line[i];
@@ -200,5 +216,8 @@ void	map_s(map_list *elem, char *line, int i, int k)
 			i++;
 		}
 		(elem->S)[k] = 0;
+		return (1);
 	}
+	else
+		return (0);
 }

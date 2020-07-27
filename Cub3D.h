@@ -6,7 +6,7 @@
 /*   By: pcariou <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 10:31:53 by pcariou           #+#    #+#             */
-/*   Updated: 2020/07/19 23:57:48 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/07/27 03:02:14 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,16 +99,17 @@ typedef struct	l_list
 int		get_next_line(int fd, char **line);
 int		ft_isdigit(int c);
 int		ft_strlen(char *str);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_atoi(const char *str);
 void	ft_putnbr_fd(int n, int fd);
-void	map_ea(map_list *elem, char *line, int i, int k);
-void	map_we(map_list *elem, char *line, int i, int k);
-void	map_so(map_list *elem, char *line, int i, int k);
-void	map_no(map_list *elem, char *line, int i, int k);
-void	map_x_y(map_list *elem, char *line, int i, int k);
-void	map_c(map_list *elem, char *line, int i, int k);
-void	map_f(map_list *elem, char *line, int i, int k);
-void	map_s(map_list *elem, char *line, int i, int k);
+int		map_ea(map_list *elem, char *line, int i, int k);
+int		map_we(map_list *elem, char *line, int i, int k);
+int		map_so(map_list *elem, char *line, int i, int k);
+int		map_no(map_list *elem, char *line, int i, int k);
+int		map_x_y(map_list *elem, char *line, int i, int k);
+int		map_c(map_list *elem, char *line, int i, int k);
+int		map_f(map_list *elem, char *line, int i, int k);
+int		map_s(map_list *elem, char *line, int i, int k);
 void	lst_new(char *line_coor, map_coor *coor);
 int		read_coor(map_coor *coor, char *line);
 int		read_file(map_list	*elem, map_coor *coor);
