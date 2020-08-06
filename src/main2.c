@@ -6,13 +6,13 @@
 /*   By: pcariou <pcariou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 17:52:58 by pcariou           #+#    #+#             */
-/*   Updated: 2020/05/06 14:23:29 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/07/28 03:37:41 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Cub3D.h"
+#include "includes/cub3d.h"
 
-double		finding_v(map_list *elem)
+double		finding_v(t_map *elem)
 {
 	double				coor[2];
 	unsigned int		map[2];
@@ -41,7 +41,7 @@ double		finding_v(map_list *elem)
 	* cos(elem->cr - elem->rad);
 }
 
-void		computation_h(map_list *elem, unsigned int *map, double *coor)
+void		computation_h(t_map *elem, unsigned int *map, double *coor)
 {
 	if (elem->rad > M_PI)
 	{
@@ -57,7 +57,7 @@ void		computation_h(map_list *elem, unsigned int *map, double *coor)
 	map[1] = coor[1] / 64;
 }
 
-double		finding_h(map_list *elem)
+double		finding_h(t_map *elem)
 {
 	double			coor[2];
 	unsigned int	map[2];
@@ -86,7 +86,7 @@ double		finding_h(map_list *elem)
 	* cos(elem->cr - elem->rad);
 }
 
-void		map_infos2(map_list *elem, int x, int y)
+void		map_infos2(t_map *elem, int x, int y)
 {
 	elem->posx = y * 64 + 32;
 	elem->posy = x * 64 + 32;
@@ -113,7 +113,7 @@ void		map_infos2(map_list *elem, int x, int y)
 	elem->map[x][y] = '0';
 }
 
-void		map_infos1(map_list *elem, int x, int y, int k)
+void		map_infos1(t_map *elem, int x, int y, int k)
 {
 	while (elem->map[x])
 	{

@@ -6,13 +6,13 @@
 /*   By: pcariou <pcariou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 18:15:16 by pcariou           #+#    #+#             */
-/*   Updated: 2020/07/27 03:26:39 by pcariou          ###   ########.fr       */
+/*   Updated: 2020/08/05 01:23:35 by pcariou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Cub3D.h"
+#include "includes/cub3d.h"
 
-void	map_infos(map_list *elem)
+void	map_infos(t_map *elem)
 {
 	int x;
 	int y;
@@ -34,12 +34,12 @@ void	map_infos(map_list *elem)
 	}
 	x = 0;
 	y = 0;
-	if (!(elem->sprites = malloc(sizeof(data_s) * elem->count_s)))
+	if (!(elem->sprites = malloc(sizeof(t_spri) * elem->count_s)))
 		return ;
 	map_infos1(elem, x, y, k);
 }
 
-void	call_all_rays(map_list *elem)
+void	call_all_rays(t_map *elem)
 {
 	int		i;
 	double	h;
@@ -63,7 +63,7 @@ void	call_all_rays(map_list *elem)
 	trace_rays(elem);
 }
 
-void	init_dist_ratios(map_list *elem)
+void	init_dist_ratios(t_map *elem)
 {
 	int i;
 
@@ -84,23 +84,4 @@ void	init_dist_ratios(map_list *elem)
 		i++;
 	}
 	elem->count_s = 0;
-}
-
-void	key_action1(map_list *elem)
-{
-	if (elem->key_down[100])
-	{
-		if ((elem->map[(int)((elem->posy + sin(elem->rad + M_PI_2) * 5) / 64)]
-				[(int)((elem->posx - cos(elem->rad + M_PI_2) * 5) / 64)] != '1')
-				&& (sqrt(pow((elem->posx - cos(elem->rad + M_PI_2) * 5) -
-				elem->sprites[0].x, 2) + pow((elem->posy + sin(elem->rad
-				+ M_PI_2) * 5) - elem->sprites[0].y, 2)) * 0.9 >=
-				(elem->cubs / 6)))
-		{
-			elem->posx -= cos(elem->rad + M_PI_2) * 5;
-			elem->posy += sin(elem->rad + M_PI_2) * 5;
-		}
-	}
-	if (elem->key_down[65361])
-		elem->rad += 0.04;
 }

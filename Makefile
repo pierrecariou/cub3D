@@ -6,7 +6,7 @@
 #    By: pcariou <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/18 14:10:41 by pcariou           #+#    #+#              #
-#    Updated: 2020/07/16 04:44:51 by pcariou          ###   ########.fr        #
+#    Updated: 2020/08/04 23:11:49 by pcariou          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,23 @@ NAME		= Cub3D
 
 HEADER		= ./
 
-SRCS		=  main.c main1.c main2.c main3.c parsing.c parsing1.c parsing2.c gnl/get_next_line.c gnl/get_next_line_utils.c
+SRCS		= 	src/main.c \
+				src/bmp.c \
+				src/move.c \
+				src/utils.c \
+				src/main1.c \
+				src/main2.c \
+				src/main3.c \
+				src/sprites.c \
+				src/textcolo.c \
+				parsing/parsexymap.c \
+				parsing/parsexpm.c \
+				parsing/parsecf.c \
+				parsing/map.c \
+				parsing/map1.c \
+				parsing/parserepets.c \
+				parsing/parsing.c \
+				gnl/get_next_line.c gnl/get_next_line_utils.c
 
 OBJS		= $(SRCS:.c=.o)
 
